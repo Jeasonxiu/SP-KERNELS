@@ -19,11 +19,15 @@ curdir=pwd;
 
 mkdir(runname)
 cd(runname)
-!ln -s /Volumes/nmancine/data2/nmancine/PROJECTS/SP_RECEIVER_FUNCTIONS/KERNEL/MATLAB/MATLAB-CODE/FUNCTIONS .
-!ln -s /Volumes/nmancine/data2/nmancine/PROJECTS/SP_RECEIVER_FUNCTIONS/KERNEL/MATLAB/MIGRA .
-!ln -s /Volumes/nmancine/data2/nmancine/PROJECTS/SP_RECEIVER_FUNCTIONS/KERNEL/TEST_MODELS .
 
-addpath('FUNCTIONS')
+DirsToLink = {'MATLAB-CODE/FUNCTIONS','MIGRA','../../TEST_MODELS'};
+
+for Dir = DirsToLink;
+    cmd=sprintf('ln -sf %s/%s .', curdir, Dir{1});
+    system(cmd);
+end
+
+addpath('FUNCTIONS');
 
 back_project_synthetics(InversionParams);
 
