@@ -1,5 +1,13 @@
 %%Draws figures for GJI paper
 %N.J. Mancinelli -- June 2017
+%% Sp Isochrons
+
+
+%% Benchmark Test
+%
+
+%% Components (Timing, Geometrical Spreading, Scattering Patterns)
+
 %
 %% Layered Kernels
 addpath('MATLAB-CODE/FUNCTIONS')
