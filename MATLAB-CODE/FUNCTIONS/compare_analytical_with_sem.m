@@ -1,9 +1,9 @@
 function compare_analytical_with_sem()
     clear;
 
-    load('/Volumes/nmancine/data2/nmancine/PROJECTS/SP_RECEIVER_FUNCTIONS/KERNEL/MATLAB/Kernel_Angles_x2_0.01_2500.mat')
+    load('/Volumes/nmancine/data2/nmancine/PROJECTS/SP_RECEIVER_FUNCTIONS/KERNEL/MATLAB/SP-KERNELS/DATA/Kernel_Angles_x2_0.01_2500.mat')
 
-    stalocs_raw = load('/Volumes/nmancine/data2/nmancine/PROJECTS/SP_RECEIVER_FUNCTIONS/KERNEL/MATLAB/stalocs.txt')/1000.0 - 1500.0;
+    stalocs_raw = load('/Volumes/nmancine/data2/nmancine/PROJECTS/SP_RECEIVER_FUNCTIONS/KERNEL/MATLAB/SP-KERNELS/DATA/stalocs.txt')/1000.0 - 1500.0;
 
     stalocs = interp1(1:length(stalocs_raw),stalocs_raw,Stations);
 
@@ -57,6 +57,11 @@ function compare_analytical_with_sem()
             KAN=flatten(Kernel2(:,:,itime,iangle),2);
         end
 
+        %Normalize by area
+        deltax=xs(2)-xs(1);
+        deltaz=zs(2)-zs(1);
+        KAN=KAN/(deltax*deltaz);
+        KSEM=KSEM/(pi*2.5^2);
         
 
         AX=subplot(3,3,3+iplt);
@@ -83,7 +88,7 @@ function compare_analytical_with_sem()
         %ylabel('Mean Abs. Amplitude')
         %xlabel('Lateral Position (km)')
         xlim(xlimits)
-        text(0.05,0.85,sprintf('Factor = %f',scalingfac),'Units','normalized');
+        text(0.05,0.85,sprintf('Analytic/SEM = %f',scalingfac),'Units','normalized');
         %legend('Analytical','SEM','Location','NorthWest')
         %colorbar;
 

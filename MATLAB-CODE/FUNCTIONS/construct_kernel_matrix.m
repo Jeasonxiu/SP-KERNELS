@@ -1,4 +1,10 @@
 function construct_kernel_matrix(Scat_Strength,Scat_Radius)
+%Constructs kernel matrix from SEM seismograms.
+% N.B. Data intesive -- works best if run locally.
+% N.J. Mancinelli -- June 2017
+%
+%
+%
 
 d1=0;
 d2=5;
@@ -32,7 +38,7 @@ for idep=1:nd;
     %disp(Scat_Depth);
     
     %scale=40.0;
-    basedir=sprintf('/gpfs_home/nmancine/data2/nmancine/PROJECTS/SP_RECEIVER_FUNCTIONS/KERNEL/OUTPUT_FILES_%d-%1.2f-%d-%2d-DBLPERIOD/OUTPUT_FILES/',Scat_Depth*1000,Scat_Strength,Scat_Radius,Angle);
+    basedir=sprintf('../../../../OUTPUT_FILES_%d-%1.2f-%d-%2d-DBLPERIOD/OUTPUT_FILES/',Scat_Depth*1000,Scat_Strength,Scat_Radius,Angle);
 
     for ista = 1:1:ns;
         station=Stations(ista);
@@ -59,9 +65,8 @@ for idep=1:nd;
 
         dt=tS(2)-tS(1);
         
-        [~,tmax]=max(abs(Parent));
+        [Pmax,tmax]=max(abs(Parent));
         tdif=tP(tmax);
-        
   
         tmax_plus = tmax + round(0./dt);
         tmax_minus = tmax - round(50./dt);
@@ -70,19 +75,32 @@ for idep=1:nd;
             tmax_minus=1;
         end
         
+
+        
         %%
         %figure(1)
         %       
         %clf; plot(tP,P); hold on; plot(tS,S,'-r')
         %xlim([tP(tmax_minus),tP(tmax_plus)])
-        
-
+        %
+        %
         %%
         
         Daughter=Daughter(tmax_minus:tmax_plus);
         T=tS(tmax_minus:tmax_plus)-tdif;
         Kernel(idep,ista,iangle,:)=interp1(T,Daughter,KTimes);
-
+        
+        %debugging
+        a=max(abs(interp1(T,Daughter,KTimes)));
+        b=Pmax;
+        fprintf('%8e %8e %8e\n',a, b, a/b )
+        
+        %clf;
+        %plot(P); hold on;
+        %plot(S);
+        
+        
+        
     end
 
 end
