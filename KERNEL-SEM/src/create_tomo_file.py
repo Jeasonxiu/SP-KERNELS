@@ -28,9 +28,9 @@ def main(**params):
 	END_X=WIDTH+BUF
 	END_Z=HEIGHT+BUF
 #
-	NX=1200
+	NX=2000
 	NY=0
-	NZ=600
+	NZ=1000
 #
 	VP_MIN  =  5000.0
 	VP_MAX  = 10000.0
@@ -66,7 +66,6 @@ def main(**params):
 	
 	VS_LITH=4400.0
 	VS_ASTH=4050.0
-
 
 	VP_UPPER_LITH=VP_LITH
 	VS_UPPER_LITH=VS_LITH
