@@ -1,0 +1,10 @@
+A playground for Karen's kernel idea.
+Step (1) Generate synthetics for a scatterer that moves in depth.
+Step (2) Deconvolve synthetics.
+Step (3) Use symmetries to make a 2-D scattering kernel (red for positive RF amp, blue for negative RF amp)
+
+Things to fix now, but adjust later:
+(1) Ray parameter (angle of incident wave)
+(2) Dominant period of incidence plane wave
+(3) 1-D background model?  (start with simple halfspace, no moho)
+(4) Deconvolution params
