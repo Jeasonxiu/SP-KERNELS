@@ -8,3 +8,8 @@ Things to fix now, but adjust later:
 (2) Dominant period of incidence plane wave
 (3) 1-D background model?  (start with simple halfspace, no moho)
 (4) Deconvolution params
+
+________________
+
+Please note that the source code was lost for these calculations sometime in late June, 2016. I tried my best to recover it, but there may be some outstanding discrepancies.
+--N.J. Mancinelli, June 27, 2017. 
