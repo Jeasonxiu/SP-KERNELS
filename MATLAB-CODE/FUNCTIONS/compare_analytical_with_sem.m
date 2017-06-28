@@ -1,9 +1,9 @@
 function compare_analytical_with_sem()
     clear;
 
-    load('/Volumes/nmancine/data2/nmancine/PROJECTS/SP_RECEIVER_FUNCTIONS/KERNEL/MATLAB/SP-KERNELS/DATA/Kernel_Angles_x2_0.01_2500.mat')
+    load('/Volumes/nmancine/data2/nmancine/PROJECTS/SP_RECEIVER_FUNCTIONS/KERNEL/SP-KERNELS/DATA/Kernel_Angles_x2_0.01_2500.mat')
 
-    stalocs_raw = load('/Volumes/nmancine/data2/nmancine/PROJECTS/SP_RECEIVER_FUNCTIONS/KERNEL/MATLAB/SP-KERNELS/DATA/stalocs.txt')/1000.0 - 1500.0;
+    stalocs_raw = load('/Volumes/nmancine/data2/nmancine/PROJECTS/SP_RECEIVER_FUNCTIONS/KERNEL/SP-KERNELS/DATA/stalocs.txt')/1000.0 - 1500.0;
 
     stalocs = interp1(1:length(stalocs_raw),stalocs_raw,Stations);
 
@@ -20,15 +20,18 @@ function compare_analytical_with_sem()
     for iangle=1:3;
         itime=itimes(it);
         KSEM=flatten(Kernel(:,:,iangle,itime),2);
+        
+        %Normalize by area
+        KSEM=KSEM/(pi*2.5^2);
 
         iplt=iangle;
 
         subplot(3,3,0+iplt);
         pcolor(-stalocs,-Scat_Depths,KSEM); shading flat; hold on
         text(0.05,0.80,sprintf('SEM\nTime: %.2f s\nAngle: %.2f$^\\circ$', KTimes(itime), Angles(iangle)),'Units','normalized','Interpreter','Latex');
-        polarmap(); %colorbar;
+        polarmap(); colorbar;
         clim=max(max(abs(KSEM)));
-        caxis([-clim,clim]);
+        %caxis([-clim,clim]);
         
         xlim(xlimits)
         add_isochron(-stalocs,Scat_Depths,KTimes(itime),Angles(iangle))
@@ -57,18 +60,19 @@ function compare_analytical_with_sem()
             KAN=flatten(Kernel2(:,:,itime,iangle),2);
         end
 
+        
         %Normalize by area
+        %fprintf('Normalizing by area\n')
         deltax=xs(2)-xs(1);
         deltaz=zs(2)-zs(1);
         KAN=KAN/(deltax*deltaz);
-        KSEM=KSEM/(pi*2.5^2);
         
 
-        AX=subplot(3,3,3+iplt);
-        pcolor(xs,-zs,KAN); shading flat; hold on; %colorbar;
+        subplot(3,3,3+iplt);
+        pcolor(xs,-zs,KAN); shading flat; hold on; colorbar;
         
         clim=max(max(abs(KAN)));
-        caxis([-clim,clim]);
+        %caxis([-clim,clim]);
         
         text(0.05,0.80,sprintf('Ray Theory\nTime: %.2f s\nAngle: %.2f$^\\circ$', KTimes(itime), Angles(iangle)),'Units','normalized','Interpreter','Latex');
         %xlabel('Lateral Position (km)')
@@ -85,12 +89,8 @@ function compare_analytical_with_sem()
         scalingfac=tmpf1'\fliplr(tmpf2)';
 
         plot(-stalocs,tmpf2/scalingfac,'-r')
-        %ylabel('Mean Abs. Amplitude')
-        %xlabel('Lateral Position (km)')
         xlim(xlimits)
-        text(0.05,0.85,sprintf('Analytic/SEM = %f',scalingfac),'Units','normalized');
-        %legend('Analytical','SEM','Location','NorthWest')
-        %colorbar;
+        text(0.05,0.85,sprintf('SEM/Analytic = %f',scalingfac),'Units','normalized');
 
     end
 
