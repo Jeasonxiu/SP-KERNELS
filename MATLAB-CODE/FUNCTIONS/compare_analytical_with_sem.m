@@ -1,5 +1,7 @@
 function compare_analytical_with_sem()
     clear;
+    
+    AddColorbars=false;
 
     load('/Volumes/nmancine/data2/nmancine/PROJECTS/SP_RECEIVER_FUNCTIONS/KERNEL/SP-KERNELS/DATA/Kernel_Angles_x2_0.01_2500.mat')
 
@@ -7,7 +9,7 @@ function compare_analytical_with_sem()
 
     stalocs = interp1(1:length(stalocs_raw),stalocs_raw,Stations);
 
-    clearvars -except Kernel KTimes stalocs Scat_Depths Angles
+    clearvars -except Kernel KTimes stalocs Scat_Depths Angles AddColorbars
 
     it=2;
     itimes=[30,80,110];
@@ -29,9 +31,12 @@ function compare_analytical_with_sem()
         subplot(3,3,0+iplt);
         pcolor(-stalocs,-Scat_Depths,KSEM); shading flat; hold on
         text(0.05,0.80,sprintf('SEM\nTime: %.2f s\nAngle: %.2f$^\\circ$', KTimes(itime), Angles(iangle)),'Units','normalized','Interpreter','Latex');
-        polarmap(); colorbar;
-        clim=max(max(abs(KSEM)));
-        %caxis([-clim,clim]);
+        polarmap();
+        if AddColorbars;
+            colorbar;
+            clim=max(max(abs(KSEM)));
+            caxis([-clim,clim]);
+        end
         
         xlim(xlimits)
         add_isochron(-stalocs,Scat_Depths,KTimes(itime),Angles(iangle))
@@ -69,10 +74,14 @@ function compare_analytical_with_sem()
         
 
         subplot(3,3,3+iplt);
-        pcolor(xs,-zs,KAN); shading flat; hold on; colorbar;
+        pcolor(xs,-zs,KAN); shading flat; hold on;
         
-        clim=max(max(abs(KAN)));
-        %caxis([-clim,clim]);
+        if AddColorbars;
+            colorbar;
+            clim=max(max(abs(KAN)));
+            caxis([-clim,clim]);
+        end
+
         
         text(0.05,0.80,sprintf('Ray Theory\nTime: %.2f s\nAngle: %.2f$^\\circ$', KTimes(itime), Angles(iangle)),'Units','normalized','Interpreter','Latex');
         %xlabel('Lateral Position (km)')
