@@ -146,7 +146,6 @@ function [XSP] = scattering_pattern(THE,alpha,beta,rho,dbeta_over_beta)
 %fprintf(' CALCULATING SCATTERING PATTERN\n\n')
 %fprintf(' dbeta/beta, beta, alpha, rho = %.3f  %.3f  %.3f  %.3f\n\n',dbeta_over_beta, beta, alpha, rho)
 
-
 fac = -rho * (dbeta_over_beta * 2 * beta/alpha);
 
 %fprintf(' fac = %f\n\n', fac)
@@ -156,6 +155,11 @@ fac = -rho * (dbeta_over_beta * 2 * beta/alpha);
 %Pterm = dbeta_over_beta * sqrt(exp(-ARG.^2*a^2 / 4));
 
 XSP = fac * sind(2*THE); %.* Pterm;
+
+%Inspired by eqn 7 of Rondenay, Bostock, and Fischer
+%1/(2pi) rather than 1/(4pi) because this is 2-D migration rather than 3d
+
+XSP = XSP * 1/2/pi;
 
 end
 
