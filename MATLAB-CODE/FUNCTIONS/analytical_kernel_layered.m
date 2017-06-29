@@ -47,27 +47,20 @@ function [Kernel,X,Y,Z,KTimes,nTimes] = analytical_kernel_layered(PdirectList, x
         XSP = scattering_pattern(THE,vp,vs,rho,vpert);
         
         %calculate reference amplitude
-        %for itime=1:length(trial_times);
-        %   amps(itime)=fractional_deriv(tchar,2.0,trial_times(itime)); 
-        %end
+        for itime=1:length(trial_times);
+           amps(itime)=fractional_deriv(tchar,2.0,trial_times(itime)); 
+        end
         
-        %[AmpRef,~]=max(abs(amps));
+	    AmpRef=max(abs(amps));
+
+        amps=amps/AmpRef;
         
-        %calculat
-        %for itime=1:length(trial_times);
-        %   amps(itime)=fractional_deriv(tchar,nderiv,trial_times(itime)); 
-        %end
-        
-        %amps=amps/AmpRef;
-        
-        %calculate reference amplitude
+        %calculate actual amplitude
         for itime=1:length(trial_times);
            amps(itime)=fractional_deriv(tchar,nderiv,trial_times(itime)); 
         end
         
-        %set amplitude of src-time function to unity
-        [maxamp]=max(abs(amps));
-        amps=amps/maxamp;
+        amps=amps/AmpRef;
         
         for ithe = 1:length(Angles);
             [T,xs,zs] = calc_isochrons(Tdirect,Tscat,xs,zs);
