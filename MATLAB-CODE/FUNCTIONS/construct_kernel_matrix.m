@@ -38,7 +38,7 @@ for idep=1:nd;
     %disp(Scat_Depth);
     
     %scale=40.0;
-    basedir=sprintf('../../../../OUTPUT_FILES_%d-%1.2f-%d-%2d-DBLPERIOD/OUTPUT_FILES/',Scat_Depth*1000,Scat_Strength,Scat_Radius,Angle);
+    basedir=sprintf('../../KERNEL-SEM/OUTPUT_FILES_%d-%1.2f-%d-%2d-DBLPERIOD/OUTPUT_FILES/',Scat_Depth*1000,Scat_Strength,Scat_Radius,Angle);
 
     for ista = 1:1:ns;
         station=Stations(ista);
@@ -90,10 +90,6 @@ for idep=1:nd;
         T=tS(tmax_minus:tmax_plus)-tdif;
         Kernel(idep,ista,iangle,:)=interp1(T,Daughter,KTimes);
         
-        %debugging
-        a=max(abs(interp1(T,Daughter,KTimes)));
-        b=Pmax;
-        fprintf('%8e %8e %8e\n',a, b, a/b )
         
         %clf;
         %plot(P); hold on;
