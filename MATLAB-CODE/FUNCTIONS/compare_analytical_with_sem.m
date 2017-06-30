@@ -3,7 +3,7 @@ function compare_analytical_with_sem()
     
     AddColorbars=false;
 
-    load('/Volumes/nmancine/data2/nmancine/PROJECTS/SP_RECEIVER_FUNCTIONS/KERNEL/SP-KERNELS/DATA/Kernel_Angles_x2_0.01_2500.mat')
+    load('/Volumes/nmancine/data2/nmancine/PROJECTS/SP_RECEIVER_FUNCTIONS/KERNEL/SP-KERNELS/DATA/Kernel_Angles_x2_0.01_2500.mat');
 
     stalocs_raw = load('/Volumes/nmancine/data2/nmancine/PROJECTS/SP_RECEIVER_FUNCTIONS/KERNEL/SP-KERNELS/DATA/stalocs.txt')/1000.0 - 1500.0;
 

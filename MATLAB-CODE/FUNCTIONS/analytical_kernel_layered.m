@@ -14,6 +14,11 @@ function [Kernel,X,Y,Z,KTimes,nTimes] = analytical_kernel_layered(PdirectList, x
     %model.vp=[5.660,7.920,7.280];
     %model.vs=[3.2,4.4,4.05];
     
+    %Initialize matrix
+    KTimes=-0:-0.2:-30;
+    nTimes=length(KTimes);
+    Kernel=zeros(length(zs),length(xs),nTimes,length(PdirectList));
+    
     iPdirect=0;
     for Pdirect = PdirectList;
         iPdirect=iPdirect+1;
@@ -21,11 +26,6 @@ function [Kernel,X,Y,Z,KTimes,nTimes] = analytical_kernel_layered(PdirectList, x
         [Tdirect,Tscat,Pscat,xs,zs]=read_in_necessary_files(Pdirect, xs, zs, model);
 
         %Step 1: Calculate array of times (Sp isochrons)
-
-        KTimes=-0:-0.2:-30;
-        nTimes=length(KTimes);
-
-        Angles=999;
 
         % Calculate the src time function
         %tchar=0.8;  % affect amplitude and period of source-time function
@@ -62,31 +62,29 @@ function [Kernel,X,Y,Z,KTimes,nTimes] = analytical_kernel_layered(PdirectList, x
         
         amps=amps/AmpRef;
         
-        for ithe = 1:length(Angles);
-            [T,xs,zs] = calc_isochrons(Tdirect,Tscat,xs,zs);
-            for itime = 1:length(KTimes);
+        [T,xs,zs] = calc_isochrons(Tdirect,Tscat,xs,zs);
+        for itime = 1:length(KTimes);
 
-                time=KTimes(itime);    
+            time=KTimes(itime);    
 
-                %Step 2: Subtract target time from array of times
+            %Step 2: Subtract target time from array of times
 
-                DT=T-time;
+            DT=T-time;
 
-                %Step 3: Function maps array of times to array of amplitudes (from src time function)
+            %Step 3: Function maps array of times to array of amplitudes (from src time function)
 
-                A = time2amp(DT,trial_times,amps);
+            A = time2amp(DT,trial_times,amps);
 
-                %Step 4: Add factors for geometrical spreading / scattering pattern
+            %Step 4: Add factors for geometrical spreading / scattering pattern
 
-                K=A .* G .* XSP;
-                %K=A .* XSP;
+            K=A .* G .* XSP;
+            %K=A .* XSP;
 
-                %Rotate onto daughter component
-                [Krot] = rotate_kernel_to_daughter(K,Pdirect,Pscat,model);
+            %Rotate onto daughter component
+            [Krot] = rotate_kernel_to_daughter(K,Pdirect,Pscat,model);
 
-                Kernel(:,:,itime,iPdirect)=Krot';
+            Kernel(:,:,itime,iPdirect)=Krot';
 
-            end
         end
     
     end
@@ -212,7 +210,7 @@ function [THE,xs,zs] = calc_angle(Pdirect,Pscat,xs,zs,model)
     
     [vps,vss]=get_v(model,zs);
     
-    [XS,~]=meshgrid(xs,zs);
+    %[XS,~]=meshgrid(xs,zs);
     [VPS,~]=meshgrid(vps,xs);
     [VSS,~]=meshgrid(vss,xs);
     
@@ -236,14 +234,16 @@ U1=1./VPS;
 THE1=asind(P./U1);
 THE2=asind(P/U1(1,1));
 
+%fprintf('surface velocity = %f\n',1/U1(1,1));
+
 %take derivative and resample
 tmp=diff(P);
 xmid=(xs(1:(end-1))+xs(2:end))/2;
 dpdx=interp2(xmid,zs,tmp',xs,zs);
 
 
-%This is an ad hoc expression modified from Eq 6.23 in Shearers Intro to
-%Seismoogy
+%This is modified from Eq 6.23 in Shearers Intro to
+%Seismology (derived for 2-D)
 energy=(1/2/pi)*abs(dpdx)'./cosd(THE1)./cosd(THE2)./U1;
 
 amp=(sqrt(energy));
@@ -259,15 +259,4 @@ amp=(sqrt(energy));
 %D=sqrt(XS.^2 + ZS.^2);
 %contourf(xs,-zs,log10(1./sqrt(D))); shading flat; colorbar
 %%
-end
-
-function [G] = geom_spreading_halfspace(xs,zs,n)
-%Amp. goes as 1/sqrt(r) in 2-D
-%  1/r in 3-D 
-
-[XS,ZS]=meshgrid(xs,zs);
-
-D=sqrt(XS.^2 + ZS.^2);
-G=D.^-n;
-G=G';
 end
