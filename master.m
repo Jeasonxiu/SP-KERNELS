@@ -20,7 +20,7 @@ curdir=pwd;
 mkdir(runname)
 cd(runname)
 
-DirsToLink = {'MATLAB-CODE/FUNCTIONS','MIGRA','../../TEST_MODELS'};
+DirsToLink = {'MATLAB-CODE/FUNCTIONS','MIGRA','KERNEL-SEM/TEST_MODELS'};
 
 for Dir = DirsToLink;
     cmd=sprintf('ln -sf %s/%s .', curdir, Dir{1});
