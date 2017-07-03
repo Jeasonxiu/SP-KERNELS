@@ -83,7 +83,6 @@ function [Tdirect,Tscat,Pscat,xs,zs]=read_in_necessary_files(rp, xs, zs, model)
                             Pscat(ix,iz)=NaN;
                             TryAlgorithm2=1;
                         end
-                       
 
                     end
                 
@@ -221,7 +220,6 @@ function [Tdirect,Tscat,Pscat,xs,zs]=read_in_necessary_files(rp, xs, zs, model)
                 X=X+p.*dz/(u.^2-p.^2).^0.5;
             end
         end
-
 
     end
 
