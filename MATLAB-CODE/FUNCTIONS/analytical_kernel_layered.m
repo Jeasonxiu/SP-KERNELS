@@ -62,7 +62,8 @@ function [Kernel,X,Y,Z,KTimes,nTimes] = analytical_kernel_layered(PdirectList, x
         
         amps=amps/AmpRef;
         
-        [T,xs,zs] = calc_isochrons(Tdirect,Tscat,xs,zs);
+        [T] = timeshifts(Tdirect,Tscat,xs,zs);
+        
         for itime = 1:length(KTimes);
 
             time=KTimes(itime);    
@@ -178,27 +179,6 @@ A=interp1(trial_times,amps,DT,'pchip',extrapval);
 
 %A = -A .* (DT.^3 - 3*tchar^2 *DT)/tchar^4;
 
-end
-
-function [T,xs,zs] = calc_isochrons(Tdirect,Tscat,xs,zs)
-%
-[T,xs,zs] = timeshifts_layercake(Tdirect,Tscat,xs,zs);
-end
-
-function [T,xs0,zs0] = timeshifts_layercake(Tdirect,Tscat,xs0,zs0)
-T10=Tdirect;
-T20=Tscat;
-
-[XS0, ZS0] = meshgrid(xs0,zs0);
-%[XS, ZS] = meshgrid(xs,zs);
-
-
-%T1=interp2(XS0,ZS0,T10',XS,ZS);
-%T2=interp2(XS0,ZS0,T20',XS,ZS);
-
-tref=interp2(XS0,ZS0,T10,0,0);
-
-T = T10'+T20 - tref;
 end
 
 function [THE,xs,zs] = calc_angle(Pdirect,Pscat,xs,zs,model)
