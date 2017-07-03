@@ -2,16 +2,18 @@
 %N.J. Mancinelli -- June 2017
 %% Sp Isochrons
 
+%% Model Setup (use illustrator)
 
-%% Benchmark Test
-%
+%% Numerical Kernels
 
-%% Components (Timing, Geometrical Spreading, Scattering Patterns)
+%% Components of analytical kernels (Timing, Geometrical Spreading, Scattering Patterns)
 
-%
-%% Layered Kernels
+%% Benchmarking figure
+
+%% Layered Kernels (Timing, Geometrical Spreading, Scattering Patterns)
 addpath('MATLAB-CODE/FUNCTIONS')
 plot_kernels_layered()
+
 %% Migration scheme
 curdir=pwd;
 cd('OUTPUT/MIGRATION_FOR_KAREN')
