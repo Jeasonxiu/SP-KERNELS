@@ -14,20 +14,23 @@ classdef figure3
                 plot(0,0,'^r')
             end
             
-            kernel=kernel();
+            function add_subplot(isub,itime,ip)
+                subplot(2,3,isub); hold on;
+                pcolor(k.X(:,:,itime),k.Y(:,:,itime),k.Kernel(:,:,ip,itime)); shading flat
+                polarmap()
+                add_decor();
+                title(sprintf('%.2f, %2d s, deg',k.KTimes(itime), k.Angles(ip)));
+                xlim([-600,150]);
+            end
             
-            obj.fig=figure(1); 
-            subplot(2,1,1); hold on;
-            [C,h]=contour(iso.xs,iso.zs,iso.Ps,0:6:40,'black');
-            clabel(C,h,'FontWeight','bold','Color','blue')
-            title('P-to-S');
-            add_decor();
-            
-            subplot(2,1,2); hold on;
-            [C,h]=contour(iso.xs,iso.zs,iso.Sp,-42:6:0,'black');
-            clabel(C,h,'FontWeight','bold','Color','blue')
-            title('S-to-P');
-            add_decor();
+            k=kernel(1);
+            obj.fig=figure(1);          
+            add_subplot(1,120,1)
+            add_subplot(2,80,1)
+            add_subplot(3,40,1)
+            add_subplot(4,80,1)
+            add_subplot(5,80,2)
+            add_subplot(6,80,3)
         end
         
         function save(obj)
