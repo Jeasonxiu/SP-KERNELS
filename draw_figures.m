@@ -9,7 +9,7 @@ save(f1);
 
 %% Model Setup (use illustrator)
 
-%% Numerical Kernels
+%% Numerical Kernels (show timing, angular dependence)
 f3=figure3;
 save(f3);
 
