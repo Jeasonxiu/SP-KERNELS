@@ -24,6 +24,7 @@ classdef figure3
             end
             
             k=kernel(1);
+            k=load(k);
             obj.fig=figure(1);          
             add_subplot(1,120,1)
             add_subplot(2,80,1)
