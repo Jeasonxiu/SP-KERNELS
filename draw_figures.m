@@ -10,6 +10,8 @@ save(f1);
 %% Model Setup (use illustrator)
 
 %% Numerical Kernels
+f3=figure3;
+save(f3);
 
 %% Components of analytical kernels (Timing, Geometrical Spreading, Scattering Patterns)
 

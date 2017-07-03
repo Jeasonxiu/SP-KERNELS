@@ -35,7 +35,7 @@ classdef figure3
         
         function save(obj)
             obj.fig;
-            print -depsc2 -painters figure1.eps
+            print -depsc2 -painters figure3.eps
             close;
         end
 
