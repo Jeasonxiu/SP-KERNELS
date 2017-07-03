@@ -10,9 +10,9 @@ InversionParams.dzin=2;
 InversionParams.Nus=[3.15E+1,3.15E+0,3.15E-1,3.15E-2];
 InversionParams.Norm_Opts=[2];
 InversionParams.nIterMax=500;
-InversionParams.direction=3;
-InversionParams.Kernel_Type=3;
-InversionParams.ImagingMethod=2;
+InversionParams.direction=3; %3 (synthetics from both directions)
+InversionParams.Kernel_Type=3;  %3 (analytical) should be best
+InversionParams.ImagingMethod=2; %1 for Back Proj, %2 for CG Inversion
 InversionParams.saveFilename='model';
 
 curdir=pwd;
