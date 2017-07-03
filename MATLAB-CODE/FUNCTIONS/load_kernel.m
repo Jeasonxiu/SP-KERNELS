@@ -1,7 +1,8 @@
-function [Kernel,X,Y,Z,KTimes,nTimes] = load_kernel(path,tDeci)
+function [Kernel,X,Y,Z,KTimes,nTimes,Angles] = load_kernel(path,tDeci)
 
     Kernel=[];
     KTimes=[];
+    Angles=[];
     
     str1=[path '/Kernel_Angles_x2_0.01_2500.mat'];
     str2=[path '/stalocs.txt'];

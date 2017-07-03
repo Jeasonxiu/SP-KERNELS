@@ -6,6 +6,7 @@ classdef kernel
         Z
         KTimes
         nTimes
+        Angles
         tDeci=1;
         Kernel_Type
         tchar=1.0
@@ -16,7 +17,7 @@ classdef kernel
             obj.Kernel_Type=Kernel_Type;
             if Kernel_Type == 1;
                 path='/Volumes/nmancine/data2/nmancine/PROJECTS/SP_RECEIVER_FUNCTIONS/KERNEL/SP-KERNELS/DATA';
-                [Kernel,X,Y,Z,KTimes,nTimes] = load_kernel(path,obj.tDeci);
+                [Kernel,X,Y,Z,KTimes,nTimes,Angles] = load_kernel(path,obj.tDeci);
             %elseif Kernel_Type ==2;
             %    [Kernel,zs,xs,~,KTimes] = analytical_kernel_halfspace(26);
             %    nTimes=length(KTimes);
@@ -35,6 +36,8 @@ classdef kernel
                 zs=0:1:300;
                 [Kernel,X,Y,Z,KTimes,nTimes] = analytical_kernel_layered(rps, xs, zs, obj.tchar, obj.nderiv, model);
                 fprintf('done.\n')
+                Angles=incangs;
+
             else
                error('Bad Kernel_Type: %d',Kernel_Type);
             end
@@ -44,6 +47,7 @@ classdef kernel
             obj.Z=Z;
             obj.KTimes=KTimes;
             obj.nTimes=nTimes;
+            obj.Angles=Angles;
         end
     end      
     
