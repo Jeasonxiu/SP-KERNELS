@@ -5,15 +5,16 @@ classdef isochrons
         xs
         zs
         rp
+        model
     end
     methods
-        function obj=isochrons(xs,zs,rp)
+        function obj=isochrons(xs,zs,rp,model)
             obj.xs=xs;
             obj.zs=zs;
             obj.rp=rp;
-            model.vp=7.9;
-            model.vs=4.4;
-            model.hs=300.0;
+            obj.model.vp=model.vp;
+            obj.model.vs=4.4;
+            obj.model.hs=model.hs;
             [Tdirect,Tscat,~,~,~]=read_in_necessary_files(rp, xs, zs, model);
             [T] = timeshifts(Tdirect,Tscat,xs,zs);
             obj.Sp=T';
