@@ -32,7 +32,7 @@ function [Tdirect,Tscat,Pscat,xs,zs]=read_in_necessary_files(rp, xs, zs, model)
             for iz = 1:length(zs);
                
                 x=xs(ix); z=zs(iz);
-                vp=get_v(model,z);
+                [vp,~]=get_v(model,z);
                 pmax=1/vp;
                 
                 dp=0.0001;
