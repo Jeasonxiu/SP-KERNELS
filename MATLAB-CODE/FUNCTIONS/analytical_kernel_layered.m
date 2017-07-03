@@ -133,35 +133,6 @@ Krot = -M11 * Kz + M12 * Kr;
 
 end
 
-function [XSP] = scattering_pattern(THE,alpha,beta,rho,dbeta_over_beta)
-%See Sato et al. (2012), Eqn. 4.62 or Rondenay (2009) or Bostock and
-%Rondenay (1999)
-
-%gam0=sqrt(3);
-%a=5;
-%T=2.0;
-%el0=2*pi/(beta*T);
-
-%fprintf(' CALCULATING SCATTERING PATTERN\n\n')
-%fprintf(' dbeta/beta, beta, alpha, rho = %.3f  %.3f  %.3f  %.3f\n\n',dbeta_over_beta, beta, alpha, rho)
-
-fac = -rho * (dbeta_over_beta * 2 * beta/alpha);
-
-%fprintf(' fac = %f\n\n', fac)
-
-%ARG = el0/gam0 * sqrt(1+gam0^2-2*gam0*cos(THE));
-
-%Pterm = dbeta_over_beta * sqrt(exp(-ARG.^2*a^2 / 4));
-
-XSP = fac * sind(2*THE); %.* Pterm;
-
-%Inspired by eqn 7 of Rondenay, Bostock, and Fischer
-%1/(2pi) rather than 1/(4pi) because this is 2-D migration rather than 3d
-
-XSP = XSP * 1/2/pi;
-
-end
-
 function [A] = time2amp(DT,trial_times,amps)
 
 %Simple gaussian 
@@ -179,64 +150,4 @@ A=interp1(trial_times,amps,DT,'pchip',extrapval);
 
 %A = -A .* (DT.^3 - 3*tchar^2 *DT)/tchar^4;
 
-end
-
-function [THE,xs,zs] = calc_angle(Pdirect,Pscat,xs,zs,model)
-    P1=Pdirect / 111.1;
-    P2=Pscat / 111.1;
-    
-    %u
-    %[vps,vss]=get_velocity_from_profile('MIGRA/myvmod.nd',zs);
-    
-    [vps,vss]=get_v(model,zs);
-    
-    %[XS,~]=meshgrid(xs,zs);
-    [VPS,~]=meshgrid(vps,xs);
-    [VSS,~]=meshgrid(vss,xs);
-    
-    THE1=asind(P1.*VSS);
-    THE2=asind(P2.*VPS);
-
-    THE=THE1-THE2;
-    
-end
-
-function [amp] = geom_spreading(Pscat,xs,zs,model)
-%%
-P = Pscat / 111.1;
-
-%[vps,~]=get_velocity_from_profile('MIGRA/myvmod.nd',zs);
-[vps,~]=get_v(model,zs);
-
-[VPS,~]=meshgrid(vps,xs);
-
-U1=1./VPS;
-THE1=asind(P./U1);
-THE2=asind(P/U1(1,1));
-
-%fprintf('surface velocity = %f\n',1/U1(1,1));
-
-%take derivative and resample
-tmp=diff(P);
-xmid=(xs(1:(end-1))+xs(2:end))/2;
-dpdx=interp2(xmid,zs,tmp',xs,zs);
-
-
-%This is modified from Eq 6.23 in Shearers Intro to
-%Seismology (derived for 2-D)
-energy=(1/2/pi)*abs(dpdx)'./cosd(THE1)./cosd(THE2)./U1;
-
-amp=(sqrt(energy));
-
-%figure(1)
-%subplot(2,1,1)
-%
-%contourf(xs,-zs,log10(amp')); shading flat; colorbar
-%
-%subplot(2,1,2)
-%
-%[XS,ZS]=meshgrid(xs,zs);
-%D=sqrt(XS.^2 + ZS.^2);
-%contourf(xs,-zs,log10(1./sqrt(D))); shading flat; colorbar
-%%
 end
