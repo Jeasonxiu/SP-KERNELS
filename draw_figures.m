@@ -1,6 +1,11 @@
 %%Draws figures for GJI paper
 %N.J. Mancinelli -- June 2017
+addpath('MATLAB-CODE/FUNCTIONS')
+addpath('MATLAB-CODE/CLASSES')
+
 %% Sp Isochrons
+f1=figure1();
+save(f1);
 
 %% Model Setup (use illustrator)
 
