@@ -6,7 +6,7 @@ classdef kernel
         rps
         KTimes
         nTimes
-        Angles
+        Angles=[20,23,26];
         Kernel_Type
         model=velocity_model()
         X
@@ -19,10 +19,12 @@ classdef kernel
     methods
         function obj=kernel(Kernel_Type)
             obj.Kernel_Type=Kernel_Type;
-            incangs=[20,23,26];
+            obj=init(obj);
+        end
+        
+        function obj=init(obj)
             [~,betatmp]=get_v(obj.model,300);
-            obj.rps=sind(incangs)/betatmp;
-            obj.Angles=incangs;
+            obj.rps=sind(obj.Angles)/betatmp;
         end
         
         function obj=update_velocity_model(obj,newmodel)
