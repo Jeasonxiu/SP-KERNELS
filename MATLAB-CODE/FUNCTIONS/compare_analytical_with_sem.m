@@ -49,9 +49,12 @@ function compare_analytical_with_sem()
             KAN=flatten(Kernel2(:,:,iangle,itime),2);
         else
         %%%%%New section
-            model.hs=300.0;
-            model.vp=7.92;
-            model.vs=4.4;
+            %model.hs=300.0;
+            %model.vp=7.92;
+            %model.vs=4.4;
+
+            model=velocity_model();
+            model=update(model,300,7.92,4.4);
 
             Angles=[15.0,20.0,25.0];
             Pdirect=sind(Angles)/model.vs;
