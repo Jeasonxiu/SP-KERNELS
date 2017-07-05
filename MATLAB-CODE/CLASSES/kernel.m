@@ -1,14 +1,14 @@
 classdef kernel
     properties
         Kernel
-        xs
-        zs
+        xs=(-600:5:150)';
+        zs=0:5:300;
         rps
         KTimes
         nTimes
         Angles
         Kernel_Type
-        model
+        model=velocity_model()
         X
         Y
         Z
@@ -19,11 +19,6 @@ classdef kernel
     methods
         function obj=kernel(Kernel_Type)
             obj.Kernel_Type=Kernel_Type;
-            obj.model.hs=[60.0,60.0,180.0];
-            obj.model.vp=[5.660,7.920,7.280];
-            obj.model.vs=[3.2,4.4,4.05];
-            obj.xs=(-600:5:150)';
-            obj.zs=0:5:300;
             incangs=[20,23,26];
             [~,betatmp]=get_velocity_from_profile('MIGRA/myvmod.nd',300);
             obj.rps=sind(incangs)/betatmp;
