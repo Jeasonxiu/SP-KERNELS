@@ -17,10 +17,10 @@ classdef figure4
             
             k=kernel(3);
             do_column(2);
-            newmodel=k.model();
+            newmodel=k.model;
             newmodel.hs=300;
-            newmodel.vp=8.0;
-            newmodel.vs=5.5;
+            newmodel.vp=k.model.vp(2);
+            newmodel.vs=k.model.vs(2);
             k=update_velocity_model(k,newmodel);
             do_column(1);
             
