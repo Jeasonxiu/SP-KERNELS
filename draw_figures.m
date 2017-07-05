@@ -2,6 +2,7 @@
 %N.J. Mancinelli -- June 2017
 addpath('MATLAB-CODE/FUNCTIONS')
 addpath('MATLAB-CODE/CLASSES')
+addpath('MIGRA')
 
 %% Sp Isochrons
 f1=figure1();
@@ -14,6 +15,8 @@ f3=figure3;
 save(f3);
 
 %% Components of analytical kernels (Timing, Geometrical Spreading, Scattering Patterns)
+f4=figure4;
+save(f4);
 
 %% Benchmarking figure
 
