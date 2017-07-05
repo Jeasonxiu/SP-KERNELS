@@ -23,7 +23,12 @@ classdef kernel
             [~,betatmp]=get_v(obj.model,300);
             obj.rps=sind(incangs)/betatmp;
             obj.Angles=incangs;
-        end  
+        end
+        
+        function obj=update_velocity_model(obj,newmodel)
+            obj.model=update(obj.model,newmodel);
+        end
+        
         function obj=load(obj)
             if obj.Kernel_Type == 1;
                 path='/Volumes/nmancine/data2/nmancine/PROJECTS/SP_RECEIVER_FUNCTIONS/KERNEL/SP-KERNELS/DATA';
@@ -37,6 +42,7 @@ classdef kernel
             end
             
         end
+        
         function [G,XSP,A]=get_amplitude_components(obj,Pdirect,timeref)
             if obj.Kernel_Type~=3;
                 error('Bad Kernel_Type: %d',obj.Kernel_Type);
