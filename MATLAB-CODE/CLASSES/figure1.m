@@ -18,9 +18,11 @@ classdef figure1
             %model.hs=[60.0,60.0,180.0];
             %model.vp=[5.660,7.920,7.280];
             %model.vs=[3.2,4.4,4.05];
-            model.hs=[300];
-            model.vp=[7.920];
-            model.vs=[4.4];
+            model=velocity_model();
+            model.hs=300;
+            model.vp=7.92;
+            model.vs=4.4;
+            model=update(velocity_model(),model);
             iso=isochrons(-600:15:150,0:2:300,rp,model);
             
             obj.fig=figure(1); 
