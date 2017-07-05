@@ -22,14 +22,13 @@ classdef kernel
             obj.model.hs=[60.0,60.0,180.0];
             obj.model.vp=[5.660,7.920,7.280];
             obj.model.vs=[3.2,4.4,4.05];
-            obj.xs=(-600:10:150)';
-            obj.zs=0:10:300;
+            obj.xs=(-600:5:150)';
+            obj.zs=0:5:300;
             incangs=[20,23,26];
             [~,betatmp]=get_velocity_from_profile('MIGRA/myvmod.nd',300);
             obj.rps=sind(incangs)/betatmp;
             obj.Angles=incangs;
-        end
-        
+        end  
         function obj=load(obj)
             if obj.Kernel_Type == 1;
                 path='/Volumes/nmancine/data2/nmancine/PROJECTS/SP_RECEIVER_FUNCTIONS/KERNEL/SP-KERNELS/DATA';
@@ -43,12 +42,11 @@ classdef kernel
             end
             
         end
-        
-        function [G,XSP]=get_amplitude_components(obj,Pdirect)
+        function [G,XSP,A]=get_amplitude_components(obj,Pdirect,timeref)
             if obj.Kernel_Type~=3;
                 error('Bad Kernel_Type: %d',obj.Kernel_Type);
             else
-                [~,~,Pscat,~,~]=read_in_necessary_files(Pdirect, obj.xs, obj.zs, obj.model);
+                [Tdirect,Tscat,Pscat,~,~]=read_in_necessary_files(Pdirect, obj.xs, obj.zs, obj.model);
                 [G] = geom_spreading(Pscat,obj.xs,obj.zs,obj.model);
                 [THE,~,~] = calc_angle(Pdirect,Pscat,obj.xs,obj.zs,obj.model);
             %reference speeds 
@@ -57,6 +55,35 @@ classdef kernel
                 rho=3.300;
                 vpert=0.01;
                 XSP = scattering_pattern(THE,vp,vs,rho,vpert);
+
+                trial_times=-10:0.1:10;
+                amps=zeros(length(trial_times),1);
+        
+                %calculate reference amplitude
+                for itime=1:length(trial_times);
+                   amps(itime)=fractional_deriv(obj.tchar,2.0,trial_times(itime)); 
+                end
+
+                AmpRef=max(abs(amps));
+
+                %calculate actual amplitude
+                for itime=1:length(trial_times);
+                   amps(itime)=fractional_deriv(obj.tchar,obj.nderiv,trial_times(itime)); 
+                end
+
+                amps=amps/AmpRef;
+
+                [T] = timeshifts(Tdirect,Tscat,obj.xs,obj.zs);
+                
+                time=timeref;  
+
+                %Step 2: Subtract target time from array of times
+
+                DT=T-time;
+
+                %Step 3: Function maps array of times to array of amplitudes (from src time function)
+                A = time2amp(DT,trial_times,amps);
+                
             end
         end      
     end
