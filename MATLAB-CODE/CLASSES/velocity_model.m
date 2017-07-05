@@ -12,15 +12,20 @@ classdef velocity_model
     end
     methods
         function obj=velocity_model()
+            obj=init(obj);
+        end
+        
+        function obj=init(obj)
             obj.nlay=length(obj.hs);
             obj.zmin=0;
             obj.zmax=sum(obj.hs)+obj.zmin;
         end
         
-        function obj=update(obj,hs,vp,vs)
-            obj.hs=hs;
-            obj.vp=vp;
-            obj.vs=vs;
+        function obj=update(obj,newmodel)
+            obj.hs=newmodel.hs;
+            obj.vp=newmodel.vp;
+            obj.vs=newmodel.vs;
+            obj=init(obj);
         end
         
         function print(obj)
