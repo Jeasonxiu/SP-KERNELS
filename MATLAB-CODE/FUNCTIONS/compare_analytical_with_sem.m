@@ -165,5 +165,3 @@ function [T,xs,zs] = timeshifts_halfspace(xs,zs,xrec,zrec,the,vp,vs)
   T=T1+T2 - trec;
 
 end
-
-
