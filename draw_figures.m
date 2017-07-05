@@ -19,6 +19,8 @@ f4=figure4;
 save(f4);
 
 %% Benchmarking figure
+f5=figure5;
+save(f5);
 
 %% Layered Kernels (Timing, Geometrical Spreading, Scattering Patterns)
 addpath('MATLAB-CODE/FUNCTIONS')

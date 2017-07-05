@@ -53,15 +53,15 @@ classdef figure5
 
             stalocs = interp1(1:length(stalocs_raw),stalocs_raw,Stations);
 
-            clearvars -except Kernel KTimes stalocs Scat_Depths Angles AddColorbars
+            clearvars nfo;
 
             it=2;
             itimes=[30,80,110];
 
-            FIG=figure(1); clf;
-            set(FIG,'defaulttextinterpreter','latex');
-            set(FIG,'PaperPositionMode','auto')
-            set(FIG,'DefaultAxesFontSize',6);
+            obj.fig=figure(1); clf;
+            set(obj.fig,'defaulttextinterpreter','latex');
+            set(obj.fig,'PaperPositionMode','auto')
+            set(obj.fig,'DefaultAxesFontSize',6);
             xlimits=[-600, 150];
             for iangle=1:3;
                 itime=itimes(it);
