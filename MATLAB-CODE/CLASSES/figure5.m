@@ -40,20 +40,15 @@ classdef figure5
             end
 
             AddColorbars=false;
-
-            nfo=load('/Volumes/nmancine/data2/nmancine/PROJECTS/SP_RECEIVER_FUNCTIONS/KERNEL/SP-KERNELS/DATA/Kernel_Angles_x2_0.01_2500.mat');
             
-            Kernel=nfo.Kernel;
-            KTimes=nfo.KTimes;
-            Scat_Depths=nfo.Scat_Depths;
-            Angles=nfo.Angles;
-            Stations=nfo.Stations;
-
-            stalocs_raw = load('/Volumes/nmancine/data2/nmancine/PROJECTS/SP_RECEIVER_FUNCTIONS/KERNEL/SP-KERNELS/DATA/stalocs.txt')/1000.0 - 1500.0;
-
-            stalocs = interp1(1:length(stalocs_raw),stalocs_raw,Stations);
-
-            clearvars nfo;
+            KSEM_NFO=kernel(1);
+            KSEM_NFO=load(KSEM_NFO);
+            
+            KAN_NFO=kernel(3);
+            KAN_NFO.xs=KSEM_NFO.xs;
+            KAN_NFO.zs=KSEM_NFO.zs;
+            KAN_NFO.Angles=KSEM_NFO.Angles;
+            KAN_NFO=load(KAN_NFO);
 
             it=2;
             itimes=[30,80,110];
@@ -63,9 +58,9 @@ classdef figure5
             set(obj.fig,'PaperPositionMode','auto')
             set(obj.fig,'DefaultAxesFontSize',6);
             xlimits=[-600, 150];
-            for iangle=1:3;
+            for iangle=1:length(KSEM_NFO.Angles);
                 itime=itimes(it);
-                KSEM=flatten(Kernel(:,:,iangle,itime),2);
+                KSEM=flatten(KSEM_NFO.Kernel(:,:,iangle,itime),2);
 
                 %Normalize by area
                 KSEM=KSEM/(pi*2.5^2);
@@ -73,8 +68,8 @@ classdef figure5
                 iplt=iangle;
 
                 subplot(3,3,0+iplt);
-                pcolor(-stalocs,-Scat_Depths,KSEM); shading flat; hold on
-                text(0.05,0.80,sprintf('SEM\nTime: %.2f s\nAngle: %.2f$^\\circ$', KTimes(itime), Angles(iangle)),'Units','normalized','Interpreter','Latex');
+                pcolor(KSEM_NFO.xs,-KSEM_NFO.zs,KSEM); shading flat; hold on
+                text(0.05,0.80,sprintf('SEM\nTime: %.2f s\nAngle: %.2f$^\\circ$', KSEM_NFO.KTimes(itime), KSEM_NFO.Angles(iangle)),'Units','normalized','Interpreter','Latex');
                 polarmap();
                 if AddColorbars;
                     colorbar;
@@ -83,49 +78,28 @@ classdef figure5
                 end
 
                 xlim(xlimits)
-                add_isochron(-stalocs,Scat_Depths,KTimes(itime),Angles(iangle))
+                add_isochron(KSEM_NFO.xs,KSEM_NFO.zs,KSEM_NFO.KTimes(itime),KSEM_NFO.Angles(iangle))
 
                 AnalyticalVersion=1;
                 if AnalyticalVersion==-1;
 
-                    Angles=[15.0,20.0,25.0];
-                    [Kernel2,zs,xs,Angles,KTimes] = analytical_kernel_halfspace(Angles);
-                    KAN=flatten(Kernel2(:,:,iangle,itime),2);
+                    %Angles=[15.0,20.0,25.0];
+                    %[Kernel2,zs,xs,Angles,KTimes] = analytical_kernel_halfspace(Angles);
+                    %KAN=flatten(Kernel2(:,:,iangle,itime),2);
                 else
-                %%%%%New section
-                    %model.hs=300.0;
-                    %model.vp=7.92;
-                    %model.vs=4.4;
-
-                    model=velocity_model();
-                    newmodel=model;
-                    newmodel.hs=300;
-                    newmodel.vp=7.92;
-                    newmodel.vs=4.4;
-                    model=update(model,newmodel);
-
-                    Angles=[15.0,20.0,25.0];
-                    Pdirect=sind(Angles)/model.vs;
-                    tchar=1.6;
-                    nderiv=3.0;
-
-                    xs=linspace(-600,150,150)';
-                    zs=0:5:300;
-
-                    [Kernel2,~,~,~,~,~] = analytical_kernel_layered(Pdirect, xs, zs, tchar,nderiv, model);
-                    KAN=flatten(Kernel2(:,:,itime,iangle),2);
+                    KAN=flatten(KAN_NFO.Kernel(:,:,itime,iangle),2);
                 end
 
 
                 %Normalize by area
                 %fprintf('Normalizing by area\n')
-                deltax=xs(2)-xs(1);
-                deltaz=zs(2)-zs(1);
+                deltax=KAN_NFO.xs(2)-KAN_NFO.xs(1);
+                deltaz=KAN_NFO.zs(2)-KAN_NFO.zs(1);
                 KAN=KAN/(deltax*deltaz);
 
 
                 subplot(3,3,3+iplt);
-                pcolor(xs,-zs,KAN); shading flat; hold on;
+                pcolor(KAN_NFO.xs,-KAN_NFO.zs,KAN); shading flat; hold on;
 
                 if AddColorbars;
                     colorbar;
@@ -134,21 +108,21 @@ classdef figure5
                 end
 
 
-                text(0.05,0.80,sprintf('Ray Theory\nTime: %.2f s\nAngle: %.2f$^\\circ$', KTimes(itime), Angles(iangle)),'Units','normalized','Interpreter','Latex');
+                text(0.05,0.80,sprintf('Ray Theory\nTime: %.2f s\nAngle: %.2f$^\\circ$', KAN_NFO.KTimes(itime), KAN_NFO.Angles(iangle)),'Units','normalized','Interpreter','Latex');
                 %xlabel('Lateral Position (km)')
                 %ylabel('Depth (km)')
                 xlim(xlimits)
-                add_isochron(xs,zs,KTimes(itime), Angles(iangle))
+                add_isochron(KAN_NFO.xs,KAN_NFO.zs,KAN_NFO.KTimes(itime),KAN_NFO.Angles(iangle))
 
                 subplot(3,3,6+iplt)
                 %pcolor(xs,-zs,fliplr(KSEM) - KAN/173.4297); shading flat; colorbar;
                 %title(sprintf('Time, Angle = %f,  %f', KTimes(itime), Angles(iangle)))
                 tmpf1=mean(abs(KAN));
-                plot(xs,tmpf1); hold on;
+                plot(KAN_NFO.xs,tmpf1); hold on;
                 tmpf2=mean(abs(KSEM));
                 scalingfac=tmpf1'\fliplr(tmpf2)';
 
-                plot(-stalocs,tmpf2/scalingfac,'-r')
+                plot(KAN_NFO.xs,tmpf2/scalingfac,'-r')
                 xlim(xlimits)
                 text(0.05,0.85,sprintf('SEM/Analytic = %f',scalingfac),'Units','normalized');
 
@@ -178,8 +152,6 @@ classdef figure5
             print -depsc2 -painters figure5.eps
             close;
         end
-
-        
 
     end
 end

@@ -1,19 +1,19 @@
 classdef kernel
     properties
         Kernel
-        xs=(-600:5:150)';
-        zs=0:5:300;
+        xs=(-600:5:150)'
+        zs=0:5:300
         rps
         KTimes
         nTimes
-        Angles=[20,23,26];
+        Angles=20
         Kernel_Type
         model=velocity_model()
         X
         Y
         Z
-        tDeci=1;
-        tchar=1.0
+        tDeci=1
+        tchar=1.6
         nderiv=3.0
     end
     methods
@@ -32,9 +32,12 @@ classdef kernel
         end
         
         function obj=load(obj)
+            obj=init(obj);
             if obj.Kernel_Type == 1;
                 path='/Volumes/nmancine/data2/nmancine/PROJECTS/SP_RECEIVER_FUNCTIONS/KERNEL/SP-KERNELS/DATA';
                 [obj.Kernel,obj.X,obj.Y,obj.Z,obj.KTimes,obj.nTimes,obj.Angles] = load_kernel(path,obj.tDeci);
+                obj.xs=obj.X(1,:,1)';
+                obj.zs=obj.Y(:,1,1)';
             elseif obj.Kernel_Type ==3;
                 fprintf('Computing analytical kernel... ')
                 [obj.Kernel,~,~,~,obj.KTimes,obj.nTimes] = analytical_kernel_layered(obj.rps, obj.xs, obj.zs, obj.tchar, obj.nderiv, obj.model);
