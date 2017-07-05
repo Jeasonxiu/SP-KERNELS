@@ -6,3 +6,4 @@ OUTPUT_FILES*
 *.out
 *.pyc
 *.eps
+.DS_Store
