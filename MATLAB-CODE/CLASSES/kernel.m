@@ -20,7 +20,7 @@ classdef kernel
         function obj=kernel(Kernel_Type)
             obj.Kernel_Type=Kernel_Type;
             incangs=[20,23,26];
-            [~,betatmp]=get_velocity_from_profile('MIGRA/myvmod.nd',300);
+            [~,betatmp]=get_v(obj.model,300);
             obj.rps=sind(incangs)/betatmp;
             obj.Angles=incangs;
         end  
