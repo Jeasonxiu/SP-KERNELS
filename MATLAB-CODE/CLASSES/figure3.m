@@ -16,7 +16,7 @@ classdef figure3
             
             function add_subplot(isub,itime,ip)
                 subplot(2,3,isub); hold on;
-                pcolor(k.X(:,:,itime),k.Y(:,:,itime),k.Kernel(:,:,ip,itime)); shading flat
+                pcolor(k.xs,k.zs,k.Kernel(:,:,ip,itime)); shading flat
                 polarmap()
                 add_decor();
                 title(sprintf('%.2f, %2d s, deg',k.KTimes(itime), k.Angles(ip)));
