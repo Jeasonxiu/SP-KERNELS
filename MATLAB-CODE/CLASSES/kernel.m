@@ -36,8 +36,9 @@ classdef kernel
             if obj.Kernel_Type == 1;
                 path='/Volumes/nmancine/data2/nmancine/PROJECTS/SP_RECEIVER_FUNCTIONS/KERNEL/SP-KERNELS/DATA';
                 [obj.Kernel,obj.X,obj.Y,obj.Z,obj.KTimes,obj.nTimes,obj.Angles] = load_kernel(path,obj.tDeci);
-                obj.xs=obj.X(1,:,1)';
+                obj.xs=flipud(obj.X(1,:,1)');
                 obj.zs=obj.Y(:,1,1)';
+                obj.Kernel=flip(obj.Kernel,2);
             elseif obj.Kernel_Type ==3;
                 fprintf('Computing analytical kernel... ')
                 [obj.Kernel,~,~,~,obj.KTimes,obj.nTimes] = analytical_kernel_layered(obj.rps, obj.xs, obj.zs, obj.tchar, obj.nderiv, obj.model);

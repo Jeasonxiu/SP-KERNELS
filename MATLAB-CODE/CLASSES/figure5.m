@@ -110,7 +110,6 @@ classdef figure5
                     caxis([-clim,clim]);
                 end
 
-
                 text(0.05,0.80,sprintf('Ray Theory\nTime: %.2f s\nAngle: %.2f$^\\circ$', KAN_NFO.KTimes(itime), KAN_NFO.Angles(iangle)),'Units','normalized','Interpreter','Latex');
                 %xlabel('Lateral Position (km)')
                 %ylabel('Depth (km)')
@@ -123,7 +122,7 @@ classdef figure5
                 tmpf1=mean(abs(KAN));
                 plot(KAN_NFO.xs,tmpf1); hold on;
                 tmpf2=mean(abs(KSEM));
-                scalingfac=tmpf1'\fliplr(tmpf2)';
+                scalingfac=tmpf1'\(tmpf2)';
 
                 plot(KAN_NFO.xs,tmpf2/scalingfac,'-r')
                 xlim(xlimits)
