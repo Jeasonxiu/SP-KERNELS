@@ -11,6 +11,25 @@ function compare_analytical_with_sem()
 
     clearvars -except Kernel KTimes stalocs Scat_Depths Angles AddColorbars
 
+    %
+    model=velocity_model();
+    newmodel=model;
+    newmodel.hs=300.0;
+    newmodel.vp=7.92;
+    newmodel.vs=4.4;
+    model=update(model,newmodel);
+    Angles=[15.0,20.0,25.0];
+    Pdirect=sind(Angles)/model.vs;
+    tchar=1.6;
+    nderiv=3.0;
+
+    xs=linspace(-600,150,150)';
+    zs=0:5:300;
+
+    [Kernel2,~,~,~,~,~] = analytical_kernel_layered(Pdirect, xs, zs, tchar,nderiv, model);
+    
+    
+    
     it=2;
     itimes=[30,80,110];
 
@@ -41,45 +60,13 @@ function compare_analytical_with_sem()
         xlim(xlimits)
         add_isochron(-stalocs,Scat_Depths,KTimes(itime),Angles(iangle))
 
-        AnalyticalVersion=1;
-        if AnalyticalVersion==-1;
-            
-            Angles=[15.0,20.0,25.0];
-            [Kernel2,zs,xs,Angles,KTimes] = analytical_kernel_halfspace(Angles);
-            KAN=flatten(Kernel2(:,:,iangle,itime),2);
-        else
-        %%%%%New section
-            %model.hs=300.0;
-            %model.vp=7.92;
-            %model.vs=4.4;
-
-            model=velocity_model();
-            newmodel=model;
-            newmodel.hs=300.0;
-            newmodel.vp=7.92;
-            newmodel.vs=4.4;
-            model=update(model,newmodel);
-
-            Angles=[15.0,20.0,25.0];
-            Pdirect=sind(Angles)/model.vs;
-            tchar=1.6;
-            nderiv=3.0;
-
-            xs=linspace(-600,150,150)';
-            zs=0:5:300;
-
-            [Kernel2,~,~,~,~,~] = analytical_kernel_layered(Pdirect, xs, zs, tchar,nderiv, model);
-            KAN=flatten(Kernel2(:,:,itime,iangle),2);
-        end
+        KAN=flatten(Kernel2(:,:,itime,iangle),2);
         
         %Normalize by area
         %fprintf('Normalizing by area\n')
         deltax=xs(2)-xs(1);
         deltaz=zs(2)-zs(1);
         KAN=KAN/(deltax*deltaz);
-        
-        %debug
-        fprintf('deltax, deltaz = %10f, %10f', deltax, deltaz )
 
         subplot(3,3,3+iplt);
         pcolor(xs,-zs,KAN); shading flat; hold on;
