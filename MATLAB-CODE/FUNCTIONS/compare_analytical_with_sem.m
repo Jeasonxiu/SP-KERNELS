@@ -54,7 +54,11 @@ function compare_analytical_with_sem()
             %model.vs=4.4;
 
             model=velocity_model();
-            model=update(model,300,7.92,4.4);
+            newmodel=model;
+            newmodel.hs=300.0;
+            newmodel.vp=7.92;
+            newmodel.vs=4.4;
+            model=update(model,newmodel);
 
             Angles=[15.0,20.0,25.0];
             Pdirect=sind(Angles)/model.vs;
@@ -73,6 +77,9 @@ function compare_analytical_with_sem()
         deltax=xs(2)-xs(1);
         deltaz=zs(2)-zs(1);
         KAN=KAN/(deltax*deltaz);
+        
+        %debug
+        fprintf('deltax, deltaz = %10f, %10f', deltax, deltaz )
 
         subplot(3,3,3+iplt);
         pcolor(xs,-zs,KAN); shading flat; hold on;
