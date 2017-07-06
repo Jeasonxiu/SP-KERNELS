@@ -28,8 +28,8 @@ function back_project_synthetics(InversionParams)
         TakeDifferences=false;
         %Don't regularize
         Norm_Opts=0;
-        %Deconvolve
-        DeconvolveParentWaveform=true;
+        %Don't Deconvolve
+        DeconvolveParentWaveform=false;
         
     elseif (ImagingMethod == 2)
         fprintf('Performing C-G Inversion\n')
@@ -58,15 +58,13 @@ function back_project_synthetics(InversionParams)
         TMP(:,:,:)=Kernel(:,:,1,:);
         Kernel=TMP;
     elseif Kernel_Type ==3;
-        [~,betatmp]=get_velocity_from_profile('MIGRA/myvmod.nd',300);
+        model=velocity_model();
+        [~,betatmp]=get_v(model,300);
         incangs=[20,23,26];
         rps=sind(incangs)/betatmp;
         %fprintf('Debug 1: %f %f %f\n',incangs(1),betatmp,rps)
         fprintf('Computing analytical kernel... ')
         %[Kernel,X,Y,Z,KTimes,nTimes] = analytical_kernel_layered(rps,tchar,nderiv);
-        model.hs=[60.0,60.0,180.0];
-        model.vp=[5.660,7.920,7.280];
-        model.vs=[3.2,4.4,4.05];
         xs=(-600:1:150)';
         zs=0:1:300;
         [Kernel,X,Y,Z,KTimes,nTimes] = analytical_kernel_layered(rps, xs, zs, tchar, nderiv, model);
@@ -249,12 +247,10 @@ function back_project_synthetics(InversionParams)
             filename=[saveFilename tmp];
             
             if (TakeDifferences)
-                model.vs=[3.2,4.4,4.05];
-                model.hs=[60.0,60.0,180.0];
                 for ii = 1:length(xs)
                     for jj = 1:length(zs)
                         model.vs=[3.2,4.4,4.05];
-                        dv=get_velocity_from_1Dmod(model,zs(jj));
+                        [~,dv]=get_v(velocity_model,zs(jj));
                         disp(dv);
                         volume(jj,ii)=volume(jj,ii);
                     end
