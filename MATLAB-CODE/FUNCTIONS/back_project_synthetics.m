@@ -76,6 +76,8 @@ function back_project_synthetics(InversionParams)
     Kernel=real(Kernel);
     Kernel(isnan(Kernel))=0;
     
+    %%
+    
     %Set model parameters
     x1=1100.0;
     x2=2300.0;
@@ -225,6 +227,7 @@ function back_project_synthetics(InversionParams)
     
     d=reshape(Data',[],1);
     
+    %%
     
     for norm_opt = Norm_Opts;
         
