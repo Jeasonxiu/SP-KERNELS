@@ -95,13 +95,11 @@ classdef figure5
                     KAN=flatten(KAN_NFO.Kernel(:,:,itime,iangle),2);
                 end
 
-
                 %Normalize by area
                 %fprintf('Normalizing by area\n')
-                deltax=KAN_NFO.xs(2)-KAN_NFO.xs(1);
-                deltaz=KAN_NFO.zs(2)-KAN_NFO.zs(1);
+                deltax=abs(KAN_NFO.xs(2)-KAN_NFO.xs(1));
+                deltaz=abs(KAN_NFO.zs(2)-KAN_NFO.zs(1));
                 KAN=KAN/(deltax*deltaz);
-
 
                 subplot(3,3,3+iplt);
                 pcolor(KAN_NFO.xs,-KAN_NFO.zs,KAN); shading flat; hold on;
