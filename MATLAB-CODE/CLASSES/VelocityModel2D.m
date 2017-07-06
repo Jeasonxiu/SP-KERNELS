@@ -10,5 +10,4 @@ classdef VelocityModel2D
         function obj=VelocityModel2D()
         end
     end
-    
 end
