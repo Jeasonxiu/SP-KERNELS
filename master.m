@@ -1,7 +1,7 @@
 % A master script to perform Sp migration or inversion.
 % N. J. Mancinelli -- June 2017
 %
-runname=sprintf('OUTPUT/%s/SPEED',date);
+runname=sprintf('OUTPUT/%s/SPEED_3',date);
 
 %% Link Dirs
 curdir=pwd;
@@ -20,6 +20,7 @@ addpath('CLASSES')
 %% Set inversion params and launch inversion
 
 IP=InversionParams();
+IP.direction=3;
 save IP;
 back_project_synthetics(IP);
 cd(curdir)

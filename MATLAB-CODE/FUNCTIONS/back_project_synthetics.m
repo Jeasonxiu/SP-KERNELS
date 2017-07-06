@@ -65,8 +65,8 @@ function back_project_synthetics(InversionParams)
         %fprintf('Debug 1: %f %f %f\n',incangs(1),betatmp,rps)
         fprintf('Computing analytical kernel... ')
         %[Kernel,X,Y,Z,KTimes,nTimes] = analytical_kernel_layered(rps,tchar,nderiv);
-        xs=(-600:1:150)';
-        zs=0:1:300;
+        xs=(-600:InversionParams.dxin:150)';
+        zs=0:InversionParams.dzin:300;
         [Kernel,X,Y,Z,KTimes,nTimes] = analytical_kernel_layered(rps, xs, zs, tchar, nderiv, model);
         fprintf('done.\n')
     else
