@@ -67,14 +67,12 @@ function compare_analytical_with_sem()
             [Kernel2,~,~,~,~,~] = analytical_kernel_layered(Pdirect, xs, zs, tchar,nderiv, model);
             KAN=flatten(Kernel2(:,:,itime,iangle),2);
         end
-
         
         %Normalize by area
         %fprintf('Normalizing by area\n')
         deltax=xs(2)-xs(1);
         deltaz=zs(2)-zs(1);
         KAN=KAN/(deltax*deltaz);
-        
 
         subplot(3,3,3+iplt);
         pcolor(xs,-zs,KAN); shading flat; hold on;
@@ -139,8 +137,6 @@ function add_isochron(xs,zs,time,incang)
     [T,xs,zs]=timeshifts_halfspace(xs,zs,0,0,the,vp,vs);
     C = contourc(xs,zs,T,[time,time]);
     plot(C(1,2:end),-C(2,2:end),':k','LineWidth',1.5)
-    
-
 
 end
 

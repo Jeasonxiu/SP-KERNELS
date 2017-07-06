@@ -48,6 +48,11 @@ classdef figure5
             KAN_NFO.xs=KSEM_NFO.xs;
             KAN_NFO.zs=KSEM_NFO.zs;
             KAN_NFO.Angles=KSEM_NFO.Angles;
+            newmodel=KAN_NFO.model;
+            newmodel.vp=KAN_NFO.model.vp(2);
+            newmodel.vs=KAN_NFO.model.vs(2);
+            newmodel.hs=300;
+            KAN_NFO=update_velocity_model(KAN_NFO,newmodel);
             KAN_NFO=load(KAN_NFO);
 
             it=2;
