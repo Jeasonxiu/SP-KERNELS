@@ -52,6 +52,10 @@ classdef Inversion
                 return
             end
 
+            obj.kernel.Angles=[20,23,26];
+            
+            disp(obj.kernel.Angles)
+            
             obj.kernel=load(obj.kernel);
             
             %Kernel.kernel=real(Kernel);
@@ -482,7 +486,18 @@ classdef Inversion
             end
             
             
-        end      
+        end
+        function Save(obj)
+            if nargin>1
+                filename=varagin{1};
+            else
+                filenmae='I';
+            end
+            %G and R too large to save
+            obj.G='Not saved';
+            obj.R='Not saved';
+            save(filename,obj)
+        end
     end
     
 end
