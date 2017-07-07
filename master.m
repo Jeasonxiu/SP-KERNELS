@@ -10,7 +10,7 @@ curdir=pwd;
 mkdir(runname)
 cd(runname)
 
-DirsToLink = {'MATLAB-CODE/FUNCTIONS', 'MATLAB-CODE/CLASSES', 'MIGRA', 'KERNEL-SEM/TEST_MODELS'};
+DirsToLink = {'MATLAB-CODE/FUNCTIONS', 'MATLAB-CODE/CLASSES', 'KERNEL-SEM/TEST_MODELS'};
 
 for Dir = DirsToLink;
     cmd=sprintf('ln -sf %s/%s .', curdir, Dir{1});
@@ -19,12 +19,8 @@ end
 
 addpath('FUNCTIONS');
 addpath('CLASSES')
-%% Set inversion params and launch inversion
+%% Launch inversion
 
-%IP=InversionParams();
-%IP.direction=3;
-%save IP;
 I=Inversion(0);
-%save I
-%back_project_synthetics(IP);
+Save(I);
 cd(curdir)
