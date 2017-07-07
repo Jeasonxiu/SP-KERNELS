@@ -64,7 +64,7 @@ classdef VelocityModel2D
                         isub=isub+1;
                     end
                 end
-                fprintf('iseis, isub = %d %d\n',iSeis,isub)
+                %fprintf('iseis, isub = %d %d\n',iSeis,isub)
 
                 if isub>nyplt;
                     iSeis=iSeis-1;

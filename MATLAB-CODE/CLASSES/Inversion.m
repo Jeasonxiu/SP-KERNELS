@@ -466,7 +466,6 @@ classdef Inversion
                         for ii = 1:length(xs)
                             for jj = 1:length(zs)
                                 [~,dv]=get_v(obj.velocity_model,zs(jj));
-                                disp(dv);
                                 volume(jj,ii)=volume(jj,ii);
                             end
                         end
