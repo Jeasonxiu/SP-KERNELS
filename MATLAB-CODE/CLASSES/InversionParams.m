@@ -1,15 +1,15 @@
 classdef InversionParams
     properties
-        skipSta=5;
-        tDeci=20;
-        dxin=5;
-        dzin=2;
-        Nus=3.15E-1;
-        Norm_Opts=2;
-        nIterMax=500;
-        direction=3; %3 (synthetics from both directions)
-        Kernel_Type=3;  %3 (analytical) should be best
-        ImagingMethod=1; %1 for Back Proj, %2 for CG Inversion
+        skipSta
+        tDeci
+        dxin
+        dzin
+        Nus
+        Norm_Opts
+        nIterMax
+        direction      %3 (synthetics from both directions)
+        Kernel_Type    %3 (analytical) should be best
+        ImagingMethod  %1 for Back Proj, %2 for CG Inversion
         TakeDifferences
         DeconvolveParentWaveform
         saveFilename='model';
@@ -17,7 +17,34 @@ classdef InversionParams
     methods
         function obj=InversionParams()
         end
-        
+        function obj=SetDefaultParams1(obj)
+            obj.skipSta=5;
+            obj.tDeci=20;
+            obj.dxin=5;
+            obj.dzin=2;
+            obj.Nus=3.15E-1;
+            obj.Norm_Opts=2;
+            obj.nIterMax=500;
+            obj.direction=3; %3 (synthetics from both directions)
+            obj.Kernel_Type=3;  %3 (analytical) should be best
+            obj.ImagingMethod=1; %1 for Back Proj, %2 for CG Inversion
+            obj.TakeDifferences=false;
+            obj.DeconvolveParentWaveform=false;
+        end      
+        function obj=SetDefaultParams2(obj)
+            obj.skipSta=5;
+            obj.tDeci=20;
+            obj.dxin=5;
+            obj.dzin=2;
+            obj.Nus=3.15E-1;
+            obj.Norm_Opts=2;
+            obj.nIterMax=5;
+            obj.direction=3; %3 (synthetics from both directions)
+            obj.Kernel_Type=3;  %3 (analytical) should be best
+            obj.ImagingMethod=2; %1 for Back Proj, %2 for CG Inversion
+            obj.TakeDifferences=true;
+            obj.DeconvolveParentWaveform=false;
+        end
     end
     
 end

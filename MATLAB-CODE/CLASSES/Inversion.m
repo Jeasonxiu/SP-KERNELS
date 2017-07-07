@@ -15,12 +15,16 @@ classdef Inversion
     methods 
         function obj=Inversion(varargin)
             if (nargin>0)
+                obj=SetDefaultInversionParams(obj);
                 obj=SetUpKernel(obj);
                 obj=SetUpMatrices(obj);
                 obj=RunInversion(obj);
                 plot_model(obj.VelocityModel2D)
-        
+    
             end
+        end
+        function obj=SetDefaultInversionParams(obj)
+            obj.InversionParams=SetDefaultParams2(obj.InversionParams);
         end
         function obj=SetUpKernel(obj)
             if (obj.InversionParams.ImagingMethod == 1)
@@ -463,9 +467,9 @@ classdef Inversion
                     [dhat,volume,vred]=invert_iterative(obj.G,Rk,nu,obj.d,obj.nOff,obj.nDep,obj.InversionParams.nIterMax);
 
                     if (obj.InversionParams.TakeDifferences)
-                        for ii = 1:length(xs)
-                            for jj = 1:length(zs)
-                                [~,dv]=get_v(obj.velocity_model,zs(jj));
+                        for ii = 1:length(obj.VelocityModel2D.xs)
+                            for jj = 1:length(obj.VelocityModel2D.zs)
+                                [~,dv]=get_v(obj.velocity_model,obj.VelocityModel2D.zs(jj));
                                 volume(jj,ii)=volume(jj,ii);
                             end
                         end
