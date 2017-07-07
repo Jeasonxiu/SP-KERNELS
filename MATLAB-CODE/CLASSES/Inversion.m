@@ -4,11 +4,13 @@ classdef Inversion
         velocity_model=velocity_model();
         kernel=kernel(3);
         VelocityModel2D=VelocityModel2D();
-        G=[]
-        R=[]
         d=[]
         nOff=[]
         nDep=[]
+    end
+    properties (Hidden)
+        G
+        R
     end
     methods 
         function obj=Inversion(varargin)
@@ -431,9 +433,9 @@ classdef Inversion
                 dhat=G*m;
 
                 icol=0;
-                volume=zeros(obj.nDep,obj.nOff);
-                for ioff = 1:1:obj.nOff;
-                    for idep = 1:1:obj.nDep;
+                volume=zeros(nDep,nOff);
+                for ioff = 1:1:nOff;
+                    for idep = 1:1:nDep;
                        icol=icol+1;
                         volume(idep,ioff)=m(icol); 
                     end
@@ -460,13 +462,10 @@ classdef Inversion
 
                     [dhat,volume,vred]=invert_iterative(obj.G,Rk,nu,obj.d,obj.nOff,obj.nDep,obj.InversionParams.nIterMax);
 
-                    tmp=sprintf('_%d.mat',ireg);
-                    filename=[obj.InversionParams.saveFilename tmp];
-
                     if (obj.InversionParams.TakeDifferences)
                         for ii = 1:length(xs)
                             for jj = 1:length(zs)
-                                [~,dv]=get_v(velocity_model,zs(jj));
+                                [~,dv]=get_v(obj.velocity_model,zs(jj));
                                 disp(dv);
                                 volume(jj,ii)=volume(jj,ii);
                             end
@@ -487,16 +486,19 @@ classdef Inversion
             
             
         end
-        function Save(obj)
+        function obj=PurgeLargeMatrices(obj)
+            obj.G=[];
+            obj.R=[];
+        end
+        function Save(obj,varargin)
             if nargin>1
-                filename=varagin{1};
+                filename=varargin{1};
             else
-                filenmae='I';
+                filename='I';
             end
             %G and R too large to save
-            obj.G='Not saved';
-            obj.R='Not saved';
-            save(filename,obj)
+            Inversion=PurgeLargeMatrices(obj); %#ok<NASGU>
+            save(filename,'Inversion')
         end
     end
     
