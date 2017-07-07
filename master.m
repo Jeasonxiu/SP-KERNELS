@@ -1,9 +1,10 @@
 % A master script to perform Sp migration or inversion.
 % N. J. Mancinelli -- June 2017
 %
-clear classes
+function master(label,mode1or2)
+%clear classes
 
-runname=sprintf('OUTPUT/%s/TESTING',date);
+runname=sprintf('OUTPUT/%s/%s',date,label);
 
 %% Link Dirs
 curdir=pwd;
@@ -21,6 +22,12 @@ addpath('FUNCTIONS');
 addpath('CLASSES')
 %% Launch inversion
 
-I=Inversion(0);
+I=Inversion();
+I=SetDefaultInversionParams(I, mode1or2);
+I=SetUpKernel(I);
+I=SetUpMatrices(I);
+I=RunInversion(I);
 Save(I);
+%plot_model(I.VelocityModel2D)
 cd(curdir)
+end
