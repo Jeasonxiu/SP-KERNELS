@@ -15,7 +15,7 @@ classdef Inversion
     methods 
         function obj=Inversion(varargin)
             if (nargin>0)
-                obj=SetDefaultInversionParams(obj);
+                obj=SetDefaultInversionParams(obj, 1);
                 obj=SetUpKernel(obj);
                 obj=SetUpMatrices(obj);
                 obj=RunInversion(obj);
@@ -23,8 +23,15 @@ classdef Inversion
     
             end
         end
-        function obj=SetDefaultInversionParams(obj)
-            obj.InversionParams=SetDefaultParams2(obj.InversionParams);
+
+        function obj=SetDefaultInversionParams(obj,iParam)
+            if iParam == 1
+                obj.InversionParams=SetDefaultParams1(obj.InversionParams);
+            elseif iParam == 2
+                obj.InversionParams=SetDefaultParams2(obj.InversionParams);
+            else
+                error('Bad iParam: %d', iParams)
+            end
         end
         function obj=SetUpKernel(obj)
             if (obj.InversionParams.ImagingMethod == 1)
@@ -485,8 +492,7 @@ classdef Inversion
                     obj.VelocityModel2D.dtime=obj.kernel.KTimes;
                     
                 end
-            end
-            
+            end      
             
         end
         function obj=PurgeLargeMatrices(obj)
