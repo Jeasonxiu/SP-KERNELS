@@ -38,7 +38,7 @@ classdef InversionParams
             obj.dzin=2;
             obj.Nus=3.15E-1;
             obj.Norm_Opts=2;
-            obj.nIterMax=5;
+            obj.nIterMax=500;
             obj.direction=3; %3 (synthetics from both directions)
             obj.Kernel_Type=3;  %3 (analytical) should be best
             obj.ImagingMethod=2; %1 for Back Proj, %2 for CG Inversion
