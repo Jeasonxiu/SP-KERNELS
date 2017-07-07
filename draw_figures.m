@@ -2,7 +2,6 @@
 %N.J. Mancinelli -- June 2017
 addpath('MATLAB-CODE/FUNCTIONS')
 addpath('MATLAB-CODE/CLASSES')
-addpath('MIGRA')
 
 %% (1) Sp Isochrons
 f1=figure1();
@@ -24,12 +23,16 @@ save(f5);
 
 %% (6) Migration scheme
 curdir=pwd;
-cd('OUTPUT/MIGRATION_FOR_KAREN')
-plot_model('model_1')
+cd('OUTPUT/07-Jul-2017/1')
+load I
 cd(curdir)
+plot_model(Inversion.VelocityModel2D,'figure6')
+
 
 %% (7) Inversion scheme
 curdir=pwd;
-cd('OUTPUT/INVERSION_FOR_KAREN')
-plot_model('model_1')
+cd('OUTPUT/07-Jul-2017/2')
+load I
 cd(curdir)
+plot_model(Inversion.VelocityModel2D,'figure7')
+
