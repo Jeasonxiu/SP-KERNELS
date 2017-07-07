@@ -1,6 +1,8 @@
 % A master script to perform Sp migration or inversion.
 % N. J. Mancinelli -- June 2017
 %
+clear classes
+
 runname=sprintf('OUTPUT/%s/TESTING',date);
 
 %% Link Dirs
