@@ -20,10 +20,16 @@ classdef VelocityModel2D
         end
         function plot_model(obj,varargin)
             clf;
-            if nargin==2;
+            if nargin>=2;
                 filename=varargin{1};
             else
                 filename='velocity_model';
+            end
+            
+            if nargin>=3;
+                clabel=varargin{2};
+            else
+                clabel='No Units';
             end
 
             figure(1);clf;
@@ -32,13 +38,13 @@ classdef VelocityModel2D
 
             pcolor(obj.xs,obj.zs,obj.dlnvs);
             shading flat
-            title(sprintf('Conjugate-direction inversion\nVar Red = %.2f, nu=%.2e, norm opt = %d, Kernel Type: %d\n',obj.vred, obj.nu, obj.norm_opt, obj.Kernel_Type))
+            %title(sprintf('Conjugate-direction inversion\nVar Red = %.2f, nu=%.2e, norm opt = %d, Kernel Type: %d\n',obj.vred, obj.nu, obj.norm_opt, obj.Kernel_Type))
             c=colorbar;
             set(gca,'Ydir','reverse')
             ylabel('Depth [km]');
             xlabel('Offset [km]');
             %ylabel(c,'dlnv [\%]');
-            ylabel(c,'(No Units Yet)')
+            ylabel(c,clabel)
             hold on;
             plot(obj.Locations,zeros(1,length(obj.Locations))+0.1,'o','markerfacecolor','black');
             plot(obj.xs,obj.xs*0+60,'--k')

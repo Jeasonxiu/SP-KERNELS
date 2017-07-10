@@ -1,12 +1,12 @@
-classdef Figure6 < MyFigure 
+classdef Figure7 < MyFigure
     properties
-        clabel='Scattering Potential'
-        path='OUTPUT/07-Jul-2017/1'
+        clabel='Velocity Perturbation (%)'
+        path='OUTPUT/07-Jul-2017/2'
     end
     methods
-        function obj=Figure6()
+        function obj=Figure7()
             Inversion=ReadFromDisk(obj);
-            plot_model(Inversion.VelocityModel2D(),'figure6',obj.clabel)
+            plot_model(Inversion.VelocityModel2D(),'figure7',obj.clabel)
         end
 
     end
