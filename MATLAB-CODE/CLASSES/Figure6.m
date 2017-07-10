@@ -6,7 +6,7 @@ classdef Figure6 < MyFigure
     methods
         function obj=Figure6()
             Inversion=ReadFromDisk(obj);
-            plot_model(Inversion.VelocityModel2D(),'figure6',obj.clabel)
+            obj.fig=plot_model(Inversion.VelocityModel2D(),'figure6',obj.clabel);
         end
 
     end

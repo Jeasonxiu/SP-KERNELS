@@ -24,17 +24,8 @@ f5=figure5;
 save(f5);
 
 %% (6) Migration scheme
-curdir=pwd;
-cd('OUTPUT/07-Jul-2017/1')
-load I
-cd(curdir)
-plot_model(Inversion.VelocityModel2D,'figure6')
+f6=Figure6;
 
 
 %% (7) Inversion scheme
-curdir=pwd;
-cd('OUTPUT/07-Jul-2017/2')
-load I
-cd(curdir)
-plot_model(Inversion.VelocityModel2D,'figure7')
-
+f7=Figure7;

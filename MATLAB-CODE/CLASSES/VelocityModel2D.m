@@ -18,7 +18,7 @@ classdef VelocityModel2D
     methods
         function obj=VelocityModel2D()
         end
-        function plot_model(obj,varargin)
+        function fig=plot_model(obj,varargin)
             clf;
             if nargin>=2;
                 filename=varargin{1};
@@ -32,7 +32,7 @@ classdef VelocityModel2D
                 clabel='No Units';
             end
 
-            figure(1);clf;
+            fig=figure(1);clf;
             set(gcf,'position',[0,0,800,800])
             subplot(2,3,[1 2 3]);
 
