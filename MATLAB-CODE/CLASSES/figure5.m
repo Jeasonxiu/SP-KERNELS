@@ -1,8 +1,5 @@
-classdef figure5
+classdef figure5 < MyFigure
 	%Figure 5
-    properties
-        fig
-    end
     
     methods
         function obj=figure5()
@@ -141,9 +138,6 @@ classdef figure5
             xlabel('Lateral Position (km)')
             subplot(3,3,9)
             xlabel('Lateral Position (km)')
-
-            %FIG.PaperUnits='inches';
-            %FIG.PaperPosition=[0 0 20 20];
 
             set(findall(gcf,'type','text'),'FontSize',6);
         

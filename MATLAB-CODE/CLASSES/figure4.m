@@ -1,8 +1,5 @@
-classdef figure4
+classdef figure4 < MyFigure
 	%Figure 4
-    properties
-        fig
-    end
     
     methods
         function obj=figure4()
@@ -15,6 +12,7 @@ classdef figure4
                 plot(0,0,'^r')
             end
             
+            obj.fig=figure(1);
             k=kernel(3);
             do_column(2);
             newmodel=k.model;

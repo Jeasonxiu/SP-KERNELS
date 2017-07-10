@@ -5,6 +5,7 @@ addpath('MATLAB-CODE/CLASSES')
 
 %% (1) Sp Isochrons
 f1=figure1();
+
 save(f1);
 
 %% (2) Model Setup (use illustrator)
@@ -15,6 +16,7 @@ save(f3);
 
 %% (4) Components of analytical kernels (Timing, Geometrical Spreading, Scattering Patterns)
 f4=figure4;
+f4=resize(f4,20,25);
 save(f4);
 
 %% (5) Benchmarking figure

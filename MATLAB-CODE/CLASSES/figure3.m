@@ -1,8 +1,5 @@
-classdef figure3
+classdef figure3 < MyFigure
 	%Figure 3
-    properties
-        fig
-    end
     
     methods
         function obj=figure3()
@@ -15,17 +12,17 @@ classdef figure3
             end
             
             function add_subplot(isub,itime,ip)
-                subplot(2,3,isub); hold on;
+                subplot(2,3,isub); hold on; box on;  
                 pcolor(k.xs,k.zs,k.Kernel(:,:,ip,itime)); shading flat
                 polarmap()
                 add_decor();
-                title(sprintf('%.2f, %2d s, deg',k.KTimes(itime), k.Angles(ip)));
+                title(sprintf('%.2f s, %2d deg',k.KTimes(itime), k.Angles(ip)));
                 xlim([-600,150]);
             end
             
             k=kernel(1);
             k=load(k);
-            obj.fig=figure(1);          
+            obj.fig=figure(1);         
             add_subplot(1,120,1)
             add_subplot(2,80,1)
             add_subplot(3,40,1)
