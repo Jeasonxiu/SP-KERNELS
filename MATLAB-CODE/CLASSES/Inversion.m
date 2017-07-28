@@ -105,11 +105,12 @@ classdef Inversion
 
                 iseis=0;
 
-
+                fprintf('Reading files... ')
+                counter=0;
                 for incang = incangs;
 
-                    ModelDirectory=sprintf('TEST_MODELS/L2/OUTPUT_FILES_%d-5000-400000/',incang);
-                    RfnceDirectory=sprintf('TEST_MODELS/L2/OUTPUT_FILES_%d-0-400000/',incang);
+                    ModelDirectory=sprintf('TEST_MODELS/L2_DEPTH/OUTPUT_FILES_%d-10000-100000-120000/',incang);
+                    RfnceDirectory=sprintf('TEST_MODELS/L2_DEPTH/OUTPUT_FILES_%d-0-400000-120000/',incang);
 
                     command=['cat ' ModelDirectory '/DATA/STATIONS | awk {''print $3''} > tmp.txt'];
                     system(command);
@@ -122,7 +123,6 @@ classdef Inversion
                         Daughter=load(sprintf([ModelDirectory 'OUTPUT_FILES/AA.S0%03d.BXP.semd'],iSta));
                         Parent  =load(sprintf([ModelDirectory 'OUTPUT_FILES/AA.S0%03d.BXS.semd'],iSta));
 
-                        DRef    =load(sprintf([RfnceDirectory 'OUTPUT_FILES/AA.S0%03d.BXP.semd'],iSta));
                         %PRef    =load(sprintf([RfnceDirectory 'OUTPUT_FILES/AA.S0%03d.BXS.semd'],iSta));
 
                         [AmpMax,imax]=max(abs(Parent(:,2)));
@@ -136,6 +136,8 @@ classdef Inversion
 
                         %Subtract reference waveform
                         if (TakeDifferences)
+                            DRef    =load(sprintf([RfnceDirectory 'OUTPUT_FILES/AA.S0%03d.BXP.semd'],iSta));
+                            DRef(:,2) = DRef(:,2)/AmpMax;
                             Daughter(:,2)=Daughter(:,2)-DRef(:,2);
                             %Parent(:,2)  =Parent(:,2)  -PRef(:,2);
                         end
@@ -173,10 +175,15 @@ classdef Inversion
                         BackAzimuths(iseis,1)=1.0;
                         RayParams(iseis,1)=incang;
                         Locations(iseis,1)=AllLocations(iSta);
+                        
+                        counter=counter+1;
+                        fprintf('%5.2f pct\n',counter/nSeis*100.0)
 
                     end
                 end
 
+                fprintf('...done!\n ')
+                
             end
 
             function [Data,Locations,RayParams,BackAzimuths] = build_input_matrices_reverse(InputDataParams)
