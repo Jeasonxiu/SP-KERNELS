@@ -1,7 +1,7 @@
 % A master script to perform Sp migration or inversion.
 % N. J. Mancinelli -- June 2017
 %
-function master(label,mode1or2)
+function master(label,mode1or2,lab_amplitude,lab_wavelength,lab_depth,skipsta)
 %clear classes
 
 runname=sprintf('OUTPUT/%s/%s',date,label);
@@ -25,6 +25,7 @@ addpath('CLASSES')
 I=Inversion();
 I=SetDefaultInversionParams(I, mode1or2);
 I=SetUpKernel(I);
+I=SetDataParams(I,lab_amplitude,lab_wavelength,lab_depth,skipsta);
 I=SetUpMatrices(I);
 I=RunInversion(I);
 Save(I);

@@ -1,6 +1,5 @@
 classdef InversionParams
     properties
-        skipSta
         tDeci
         dxin
         dzin
@@ -18,7 +17,6 @@ classdef InversionParams
         function obj=InversionParams()
         end
         function obj=SetDefaultParams1(obj)
-            obj.skipSta=5;
             obj.tDeci=20;
             obj.dxin=5;
             obj.dzin=2;
@@ -32,7 +30,6 @@ classdef InversionParams
             obj.DeconvolveParentWaveform=false;
         end      
         function obj=SetDefaultParams2(obj)
-            obj.skipSta=5;
             obj.tDeci=20;
             obj.dxin=5;
             obj.dzin=2;

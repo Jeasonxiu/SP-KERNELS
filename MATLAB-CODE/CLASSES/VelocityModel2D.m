@@ -56,7 +56,7 @@ classdef VelocityModel2D
             hold on;
             plot(obj.Locations,zeros(1,length(obj.Locations))+0.1,'o','markerfacecolor','black');
             plot(obj.xs,obj.xs*0+60,'--k')
-            plot(obj.xs,120-5*cos(2*pi/400*(obj.xs-1725)),'--k');
+            plot(obj.xs,120-10*cos(2*pi/400*(obj.xs-1725)),'--k');
 
             npts=length(obj.dhat)/obj.nSeis;
 

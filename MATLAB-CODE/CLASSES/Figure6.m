@@ -1,7 +1,7 @@
 classdef Figure6 < MyFigure 
     properties
         clabel='Scattering Potential'
-        path='OUTPUT/28-Jul-2017/ROUGHTOPO1'
+        path='OUTPUT/28-Jul-2017/TEST'
     end
     methods
         function obj=Figure6()

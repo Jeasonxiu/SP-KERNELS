@@ -1,24 +1,26 @@
 classdef DataParams
     properties
-        path2seis
-        path2ref
+        lab_amplitude
+        lab_wavelength
+        lab_depth
         skipSta
         KTimes
         Angles
         TakeDifferences
         DeconvolveParentWaveform
-        Direction
+        direction
     end
    methods
-       function obj=DataParams(path2seis,path2ref,skipSta,KTimes,Angles,TakeDifferences,DeconvolveParentWaveform,Direction)
-           obj.path2seis=path2seis;
-           obj.path2ref=path2ref;
+       function obj=DataParams(lab_amplitude,lab_wavelength,lab_depth,skipSta,KTimes,Angles,TakeDifferences,DeconvolveParentWaveform,direction)
+           obj.lab_amplitude=lab_amplitude;
+           obj.lab_wavelength=lab_wavelength;
+           obj.lab_depth=lab_depth;
            obj.skipSta=skipSta;
            obj.KTimes=KTimes;
            obj.Angles=Angles;
            obj.TakeDifferences=TakeDifferences;
            obj.DeconvolveParentWaveform=DeconvolveParentWaveform;
-           obj.Direction=Direction;
+           obj.direction=direction;
        end
        
    end
