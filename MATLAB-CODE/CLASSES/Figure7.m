@@ -1,7 +1,7 @@
 classdef Figure7 < MyFigure
     properties
         clabel='Velocity Perturbation (%)'
-        path='OUTPUT/07-Jul-2017/2'
+        path='OUTPUT/28-Jul-2017/NEWNORM2'
     end
     methods
         function obj=Figure7()
