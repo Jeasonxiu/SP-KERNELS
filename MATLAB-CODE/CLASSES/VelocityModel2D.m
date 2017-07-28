@@ -35,6 +35,14 @@ classdef VelocityModel2D
             fig=figure(1);clf;
             set(gcf,'position',[0,0,800,800])
             subplot(2,3,[1 2 3]);
+            
+            %get background profile
+            VM=velocity_model;
+            profile=get_v(VM,obj.zs);
+            
+            [bkgrnd,~]=meshgrid(profile,obj.xs);
+
+            tmp=bkgrnd'.*(1+obj.dlnvs/100.0);
 
             pcolor(obj.xs,obj.zs,obj.dlnvs);
             shading flat
