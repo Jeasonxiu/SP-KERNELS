@@ -6,6 +6,7 @@ classdef DataVector
         BackAzimuths
         InputDataParams
         DataParams
+        nptsPerSeis
     end
     methods
         function obj=DataVector(InputDataParams)
@@ -28,10 +29,12 @@ classdef DataVector
                     Stas=Sta2:skipSta:Sta1;
                 end
 
+                obj.nptsPerSeis=length(KTimes);
+                
                 nSeis=length(Stas)*length(incangs);
 
                 %initialize matrices
-                Data=zeros(nSeis,length(KTimes));
+                Data=zeros(nSeis,obj.nptsPerSeis);
                 Locations=zeros(nSeis,1);
                 RayParams=zeros(nSeis,1);
                 BackAzimuths=zeros(nSeis,1);
@@ -41,10 +44,6 @@ classdef DataVector
                 fprintf('Reading files... ')
                 counter=0;
                 for incang = incangs;
-                    
-                    %lab_depth (meters)
-                    %lab_amplitude (meters)
-                    %lab_wavelength (meters)
 
                     ModelDirectory=sprintf(...
                         'TEST_MODELS/L2_DEPTH/OUTPUT_FILES_%d-%d-%d-%d/',...
@@ -190,6 +189,11 @@ classdef DataVector
             obj.InputDataParams=InputDataParams;
             
             
+        end
+        function seis=extractSeis(obj,iseis)
+            ind1=(iseis-1)*obj.nptsPerSeis+1;
+            ind2=ind1+obj.nptsPerSeis-1;
+            seis=obj.d(ind1:ind2);
         end
     end
 
