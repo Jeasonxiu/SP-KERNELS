@@ -31,6 +31,12 @@ classdef VelocityModel2D
             else
                 clabel='No Units';
             end
+            
+            if nargin>=4;
+                labwavlen=varargin{3};
+                labamp=varargin{4};
+                labdep=varargin{5};
+            end
 
             fig=figure(1);clf;
             set(gcf,'position',[0,0,800,800])
@@ -55,11 +61,23 @@ classdef VelocityModel2D
             ylabel(c,clabel)
             hold on;
             plot(obj.Locations,zeros(1,length(obj.Locations))+0.1,'o','markerfacecolor','black');
-            plot(obj.xs,obj.xs*0+60,'--k')
-            plot(obj.xs,120-10*cos(2*pi/400*(obj.xs-1725)),'--k');
+            
+            
+            if nargin >= 4;
+                plot(obj.xs,obj.xs*0+60,'--k')
+
+                wl=labwavlen/1000.0;
+                amp=labamp/1000.0;
+                dep=labdep/1000.0;
+
+                plot(obj.xs,dep-amp*cos(2*pi/wl*(obj.xs-1725)),'--k');
+                titstr=sprintf('Peak-to-Peak Amplitude = %d km', amp*2.0);
+                title(titstr);
+                
+            end
 
             npts=length(obj.dhat)/obj.nSeis;
-
+            
             tmp1=1;
             tmp2=npts;
 
