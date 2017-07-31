@@ -1,0 +1,11 @@
+#!/bin/bash
+for LABDEP in 120000 180000; do
+for LABAMP in 5000 10000 20000; do 
+for LABWL in 100000 200000 400000; do 
+for SKIPSTA in 1 2 4 8 16; do
+FILNAM=LOOP-$LABAMP-$LABWL-$LABDEP-$SKIPSTA
+sbatch job.sbatch $FILNAM $LABAMP $LABWL $LABDEP $SKIPSTA 
+done
+done
+done
+done
