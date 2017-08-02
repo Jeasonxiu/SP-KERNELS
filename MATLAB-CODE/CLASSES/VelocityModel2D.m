@@ -20,6 +20,8 @@ classdef VelocityModel2D
         end
         function fig=plot_model(obj,varargin)
             clf;
+            set(0,'defaulttextInterpreter','latex') %latex axis labels
+            
             if nargin>=2;
                 filename=varargin{1};
             else
@@ -40,7 +42,7 @@ classdef VelocityModel2D
 
             fig=figure(1);clf;
             set(gcf,'position',[0,0,800,800])
-            subplot(2,3,[1 2 3]);
+            ax1=subplot(2,3,[1 2 3]);
             
             %get background profile
             VM=velocity_model;
@@ -52,6 +54,7 @@ classdef VelocityModel2D
 
             pcolor(obj.xs,obj.zs,obj.dlnvs);
             shading flat
+            polarmap()
             %title(sprintf('Conjugate-direction inversion\nVar Red = %.2f, nu=%.2e, norm opt = %d, Kernel Type: %d\n',obj.vred, obj.nu, obj.norm_opt, obj.Kernel_Type))
             c=colorbar;
             set(gca,'Ydir','reverse')
@@ -62,6 +65,9 @@ classdef VelocityModel2D
             hold on;
             plot(obj.Locations,zeros(1,length(obj.Locations))+0.1,'o','markerfacecolor','black');
             
+            deltasta=obj.Locations(2)-obj.Locations(1);
+            titstr=sprintf('Station spacing: $\\sim %d$ km\n',round(deltasta));
+            title(titstr,'interpreter','latex');
             
             if nargin >= 4;
                 plot(obj.xs,obj.xs*0+60,'--k')
@@ -71,8 +77,16 @@ classdef VelocityModel2D
                 dep=labdep/1000.0;
 
                 plot(obj.xs,dep-amp*cos(2*pi/wl*(obj.xs-1725)),'--k');
-                titstr=sprintf('Peak-to-Peak Amplitude = %d km', amp*2.0);
-                title(titstr);
+                titstr=[ sprintf('LAB Properties\n')...
+                         sprintf('Amplitude (Peak-to-Peak) = %d km\n', amp*2.0)...
+                         sprintf('$\\lambda/2$ = %d km\n', wl/2.0)...
+                         sprintf('Depth = %d km', dep)];
+                buf=0.0125;
+                text(buf,1-buf,titstr,...
+                    'interpreter','latex',...
+                    'Units','normalized',...
+                    'horizontalAlignment', 'left',...
+                    'verticalAlignment', 'top');
                 
             end
 
@@ -122,7 +136,14 @@ classdef VelocityModel2D
                 subplot(nxplt,nyplt,nyplt+jj)
                 if jj==1;
                     ylabel('Trace No.');
-                    title(sprintf('%d of %d seismograms shown',iSeis,obj.nSeis));
+                    ax2=gca();
+                    axes(ax1);
+                    ax1=text(0.5,-0.4,...
+                        sprintf('%d of %d seismograms shown',iSeis,obj.nSeis),...
+                        'interpreter','latex','units','normalized',...
+                        'horizontalAlignment','center');
+                    axes(ax2);
+                    
                 end
                 xlabel('Time');
                 axis off
@@ -132,7 +153,6 @@ classdef VelocityModel2D
             print(tmpstr,'-depsc2', '-painters');
             close;
         end
-
         
     end
 end
