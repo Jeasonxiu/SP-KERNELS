@@ -17,7 +17,6 @@ classdef InversionParams
         function obj=InversionParams()
         end
         function obj=SetDefaultParams1(obj)
-            obj.tDeci=20;
             obj.dxin=5;
             obj.dzin=2;
             obj.Nus=3.15E-1;
@@ -30,7 +29,6 @@ classdef InversionParams
             obj.DeconvolveParentWaveform=false;
         end      
         function obj=SetDefaultParams2(obj)
-            obj.tDeci=20;
             obj.dxin=5;
             obj.dzin=2;
             obj.Nus=3.15E-1;
