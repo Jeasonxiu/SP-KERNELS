@@ -7,17 +7,19 @@ classdef FigureInversion < MyFigure
         labamp
     end
     methods
-        function obj=FigureInversion(labdepth,labwavlen,labamp)
+        function obj=FigureInversion(labdepth,labwavlen,labamp,savename)
             obj.labdepth=labdepth;
             obj.labwavlen=labwavlen;
             obj.labamp=labamp;
-            obj.path=sprintf(...
-                'OUTPUT/31-Jul-2017/LOOP-%d-%d-%d-1',...
-                obj.labamp,obj.labwavlen,obj.labdepth);
+            obj.path='OUTPUT/03-Aug-2017/TEST';
+            %obj.path=sprintf(...
+            %    'OUTPUT/01-Aug-2017/LOOP-%d-%d-%d-1',...
+            %    obj.labamp,obj.labwavlen,obj.labdepth);
             Inversion=ReadFromDisk(obj);
             obj.fig=plot_model(...
-                Inversion.VelocityModel2D(),'tmp',obj.clabel,...
+                Inversion.VelocityModel2D(),savename,obj.clabel,...
                 obj.labwavlen,obj.labamp,obj.labdepth);
+            
         end
 
     end
