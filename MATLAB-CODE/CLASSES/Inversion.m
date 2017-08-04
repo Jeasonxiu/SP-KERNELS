@@ -23,7 +23,6 @@ classdef Inversion
                 plot_model(obj.VelocityModel2D)
             end
         end
-
         function obj=SetDefaultInversionParams(obj,iParam)
             if iParam == 1
                 obj.InversionParams=SetDefaultParams1(obj.InversionParams);
@@ -37,8 +36,8 @@ classdef Inversion
             if (obj.InversionParams.ImagingMethod == 1)
                 fprintf('Performing back-projection migration\n')
                 %Thin kernels
-                obj.kernel.tchar=0.1;
-                obj.kernel.nderiv=0.0;
+                obj.kernel.tchar=0.20;
+                obj.kernel.nderiv=0.5;
                 %One iteration
                 obj.InversionParams.nIterMax=1;
                 %Don't take data difference
@@ -131,14 +130,10 @@ classdef Inversion
                 BackAzimuth=DV.BackAzimuths(ii);
                 RayParam=DV.RayParams(ii);
                 %kluge for testing
-                if RayParam == 20;
-                   iRP=1;
-                elseif RayParam == 23;
-                    iRP=2;
-                elseif RayParam == 26;
-                    iRP=3;
-                else
-                    fprintf('***Warning: Bad RP %f \n', RayParam)
+                for iRP = 1:length(DV.DataParams.Angles);
+                    if RayParam == DV.DataParams.Angles(iRP);
+                        break
+                    end
                 end
 
                 fprintf('  %.2f pct complete... \n',(ii-1)/nSeis*100.0);
@@ -287,15 +282,8 @@ classdef Inversion
                 end
 
                 dhat=G*m;
-
-                icol=0;
-                volume=zeros(nDep,nOff);
-                for ioff = 1:1:nOff;
-                    for idep = 1:1:nDep;
-                       icol=icol+1;
-                        volume(idep,ioff)=m(icol); 
-                    end
-                end
+                
+                volume=obj.m2volume(m,obj);
 
             end
             
@@ -354,6 +342,58 @@ classdef Inversion
             Inversion=PurgeLargeMatrices(obj); %#ok<NASGU>
             save(filename,'Inversion')
         end
+    end
+    
+    methods (Static)       
+        function volume=m2volume(m,obj)
+            icol=0;
+            volume=zeros(obj.nDep,obj.nOff);
+            for ioff = 1:1:obj.nOff;
+                for idep = 1:1:obj.nDep;
+                   icol=icol+1;
+                   volume(idep,ioff)=m(icol); 
+                end
+            end
+        end
+        function m=volume2m(volume,obj)
+                icol=0;
+                m=zeros(obj.nDep*obj.nOff,1);
+                for ioff = 1:1:obj.nOff;
+                    for idep = 1:1:obj.nDep;
+                       icol=icol+1;
+                       m(icol)=volume(idep,ioff); 
+                    end
+                end
+
+        end
+        
+        function obj=testForwardModel(obj)
+            volume=obj.generateTestVolume(obj);
+            m=obj.volume2m(volume,obj);
+            dhat=obj.G*m;
+         
+            
+            obj.VelocityModel2D.dlnvs=volume;
+            obj.VelocityModel2D.dhat=dhat;
+            
+        end
+        
+        function volume=generateTestVolume(obj)
+            dsmooth=1; %km
+            volume=zeros(obj.nDep,obj.nOff);
+            for ioff = 1:1:obj.nOff;
+                for idep = 1:1:obj.nDep;
+                   distFromLayer=60-obj.VelocityModel2D.zs(idep);
+                   
+                   fac1=exp(-distFromLayer^2/2/dsmooth^2);
+                   fac2=(1-(distFromLayer/dsmooth)^2);
+                   amp=-3000*fac1;
+                   
+                   volume(idep,ioff)=amp; 
+                end
+            end 
+        end
+        
     end
     
 end
