@@ -28,7 +28,9 @@ I=SetUpKernel(I);
 I=SetDataParams(I,lab_amplitude,lab_wavelength,lab_depth,skipsta);
 I=SetUpMatrices(I);
 I=RunInversion(I);
+%ITest=I.testForwardModel(I);
 Save(I);
+%plot_model(ITest.VelocityModel2D,'test')
 %plot_model(I.VelocityModel2D)
 cd(curdir)
 end
