@@ -1,4 +1,4 @@
-function [out]=fractional_deriv(a,n,ts);
+function [out]=fractional_deriv(a,n,ts)
 
 out=ts*0.0;
 
