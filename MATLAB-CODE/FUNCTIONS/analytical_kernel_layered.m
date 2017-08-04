@@ -15,7 +15,7 @@ function [Kernel,X,Y,Z,KTimes,nTimes] = analytical_kernel_layered(PdirectList, x
     %model.vs=[3.2,4.4,4.05];
     
     %Initialize matrix
-    KTimes=-0:-0.2:-30;
+    KTimes=-0:-0.1:-30;
     nTimes=length(KTimes);
     Kernel=zeros(length(zs),length(xs),nTimes,length(PdirectList));
     
@@ -33,7 +33,7 @@ function [Kernel,X,Y,Z,KTimes,nTimes] = analytical_kernel_layered(PdirectList, x
         %tchar=0.1;
         %nderiv=0.0;
 
-        trial_times=-10:0.1:10;
+        trial_times=-30:0.1:30;
         amps=zeros(length(trial_times),1);
 
         [G] = geom_spreading(Pscat,xs,zs,model);
@@ -57,10 +57,14 @@ function [Kernel,X,Y,Z,KTimes,nTimes] = analytical_kernel_layered(PdirectList, x
         
         %calculate actual amplitude
         for itime=1:length(trial_times);
-           amps(itime)=fractional_deriv(tchar,nderiv,trial_times(itime)); 
+           amps(itime)=fractional_deriv(tchar,nderiv,-trial_times(itime)); 
         end
         
         amps=amps/AmpRef;
+        
+        STFun.amplitude=amps;
+        STFun.time=trial_times;
+        save('STFun','STFun');
         
         [T] = timeshifts(Tdirect,Tscat,xs,zs);
         
