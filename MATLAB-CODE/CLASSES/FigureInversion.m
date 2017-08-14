@@ -11,7 +11,7 @@ classdef FigureInversion < MyFigure
             obj.labdepth=labdepth;
             obj.labwavlen=labwavlen;
             obj.labamp=labamp;
-            obj.path='OUTPUT/04-Aug-2017/TEST';
+            obj.path='OUTPUT/14-Aug-2017/TEST';
             %obj.path=sprintf(...
             %    'OUTPUT/01-Aug-2017/LOOP-%d-%d-%d-1',...
             %    obj.labamp,obj.labwavlen,obj.labdepth);
