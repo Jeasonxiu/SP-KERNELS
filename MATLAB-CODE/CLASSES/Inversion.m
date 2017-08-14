@@ -36,8 +36,8 @@ classdef Inversion
             if (obj.InversionParams.ImagingMethod == 1)
                 fprintf('Performing back-projection migration\n')
                 %Thin kernels
-                obj.kernel.tchar=0.20;
-                obj.kernel.nderiv=0.5;
+                obj.kernel.tchar=0.90;
+                obj.kernel.nderiv=1.5;
                 %One iteration
                 obj.InversionParams.nIterMax=1;
                 %Don't take data difference
@@ -107,8 +107,10 @@ classdef Inversion
             
             obj.VelocityModel2D.nSeis=nSeis;
             
-            obj.G=zeros(obj.kernel.nTimes*nSeis,obj.nOff,obj.nDep);
-            %d=zeros(nTimes,1);
+            %Initialize cell which will contain slices of G
+            %GTMP=cell(1,obj.kernel.nTimes*nSeis);
+            obj.G=zeros(...
+                obj.kernel.nTimes*nSeis,obj.nOff*obj.nDep);
 
             %Here we make a matrix C obj.nOff by obj.nDep which store icol values
             C=zeros(obj.nOff,obj.nDep);
@@ -150,12 +152,22 @@ classdef Inversion
                 end
                 %tmp=interp3(X,Z,Y,Kernel(:,1:nTimes,:),Xq,Zq,Yq,'spline',0.0);
                 nTimes=obj.kernel.nTimes;
-                obj.G((1:nTimes)+(ii-1)*nTimes,:,:)=permute(tmp,[3 2 1]); 
                 
+                tmp2=permute(tmp,[3 2 1]);
+
+                for itime = (1:nTimes);
+                    itmp=itime+(ii-1)*nTimes;
+                    GTMP=(squeeze(tmp2(itime,:,:))); 
+                    GTMP=GTMP';
+                    GTMP=squeeze(reshape(GTMP,1,obj.nOff*obj.nDep));
+                    obj.G(itmp,:)=GTMP;       
+                end
+
                 
+            end
                 
                 %loop over offsets and depths
-                for ioff = 1:1:obj.nOff;
+            for ioff = 1:1:obj.nOff;
                     for idep = 1:1:obj.nDep;
 
                         icol=C(ioff,idep);
@@ -210,12 +222,7 @@ classdef Inversion
                             obj.R(icol,icol) = 1.0;
                         end
                    end            
-                end
             end
-
-            obj.G=permute(obj.G,[1,3,2]);
-            obj.G=reshape(obj.G,obj.kernel.nTimes*nSeis,obj.nOff*obj.nDep);
-            obj.G=sparse(obj.G);
             
         end
         function obj=RunInversion(obj)
