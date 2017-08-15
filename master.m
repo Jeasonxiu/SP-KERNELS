@@ -19,7 +19,7 @@ for Dir = DirsToLink;
 end
 
 addpath('FUNCTIONS');
-addpath('CLASSES')
+addpath('CLASSES');
 %% Launch inversion
 
 I=Inversion();
