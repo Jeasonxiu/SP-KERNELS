@@ -45,7 +45,7 @@ classdef Inversion
                 %Don't regularize
                 obj.InversionParams.Norm_Opts=0;
                 %Don't Deconvolve
-                obj.InversionParams.DeconvolveParentWaveform=false;
+                obj.InversionParams.DeconvolveParentWaveform=true;
 
             elseif (obj.InversionParams.ImagingMethod == 2)
                 fprintf('Performing C-G Inversion\n')
@@ -79,7 +79,9 @@ classdef Inversion
                 skipSta,obj.kernel.KTimes,...
                 obj.kernel.Angles,obj.InversionParams.TakeDifferences,...
                 obj.InversionParams.DeconvolveParentWaveform,...
-                obj.InversionParams.direction);
+                obj.InversionParams.direction,...
+                obj.InversionParams.TakeDerivative,...
+                obj.InversionParams.nderiv);
         end
         function obj=SetUpMatrices(obj)
             

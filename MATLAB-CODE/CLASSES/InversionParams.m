@@ -10,6 +10,8 @@ classdef InversionParams
         Kernel_Type    %3 (analytical) should be best
         ImagingMethod  %1 for Back Proj, %2 for CG Inversion
         TakeDifferences
+        TakeDerivative
+        nderiv
         DeconvolveParentWaveform
         saveFilename='model';
     end
@@ -26,7 +28,9 @@ classdef InversionParams
             obj.Kernel_Type=3;  %3 (analytical) should be best
             obj.ImagingMethod=1; %1 for Back Proj, %2 for CG Inversion
             obj.TakeDifferences=false;
-            obj.DeconvolveParentWaveform=false;
+            obj.DeconvolveParentWaveform=true;
+            obj.TakeDerivative=true;
+            obj.nderiv=0.5;
         end      
         function obj=SetDefaultParams2(obj)
             obj.dxin=5;

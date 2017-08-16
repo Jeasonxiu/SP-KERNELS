@@ -15,7 +15,7 @@ function [Kernel,X,Y,Z,KTimes,nTimes] = analytical_kernel_layered(PdirectList, x
     %model.vs=[3.2,4.4,4.05];
     
     %Initialize matrix
-    KTimes=-0:-0.2:-30;
+    KTimes=-0:-0.4:-30;
     nTimes=length(KTimes);
     Kernel=zeros(length(zs),length(xs),nTimes,length(PdirectList));
     

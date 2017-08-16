@@ -17,8 +17,6 @@ classdef DataVector
                 skipSta=InputDataParams.skipSta;
                 KTimes= InputDataParams.KTimes;
                 incangs=InputDataParams.Angles;
-                TakeDifferences=InputDataParams.TakeDifferences;
-                DeconvolveParentWaveform=InputDataParams.DeconvolveParentWaveform;
                 obj.DataParams=InputDataParams;
 
                 Sta1=1;
@@ -82,14 +80,14 @@ classdef DataVector
                         %pause
 
                         %Subtract reference waveform
-                        if (TakeDifferences)
+                        if (obj.DataParams.TakeDifferences)
                             DRef    =load(sprintf([RfnceDirectory 'OUTPUT_FILES/AA.S0%03d.BXP.semd'],iSta));
                             DRef(:,2) = DRef(:,2)/AmpMax;
                             Daughter(:,2)=Daughter(:,2)-DRef(:,2);
                             %Parent(:,2)  =Parent(:,2)  -PRef(:,2);
                         end
 
-                        if (DeconvolveParentWaveform)
+                        if (obj.DataParams.DeconvolveParentWaveform)
                            Mask=(Parent(:,1)>Parent(imax-40,1)).*(Parent(:,1)<Parent(imax+40,1));
                            P=Parent(:,2).*Mask;
                            D=Daughter(:,2);
@@ -115,11 +113,11 @@ classdef DataVector
                            time=Time;
 
                         end
+                      
                         
-                        TakeDerivative=true;
-                        
-                        if (TakeDerivative)
-                           nth=nth_deriv(-0.5,Daughter(:,2)',time);
+                        if (obj.DataParams.TakeDerivative)
+                           nth=nth_deriv(...
+                               obj.DataParams.nderiv,Daughter(:,2)',time);
                            Daughter(:,2)=nth.fx_deriv;   
                         end
 

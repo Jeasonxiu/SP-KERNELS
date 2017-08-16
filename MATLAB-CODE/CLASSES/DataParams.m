@@ -8,10 +8,14 @@ classdef DataParams
         Angles
         TakeDifferences
         DeconvolveParentWaveform
+        TakeDerivative
         direction
+        nderiv
     end
    methods
-       function obj=DataParams(lab_amplitude,lab_wavelength,lab_depth,skipSta,KTimes,Angles,TakeDifferences,DeconvolveParentWaveform,direction)
+       function obj=DataParams(lab_amplitude,lab_wavelength,lab_depth,...
+               skipSta,KTimes,Angles,TakeDifferences,...
+               DeconvolveParentWaveform,direction,TakeDerivative, nderiv)
            obj.lab_amplitude=lab_amplitude;
            obj.lab_wavelength=lab_wavelength;
            obj.lab_depth=lab_depth;
@@ -21,6 +25,8 @@ classdef DataParams
            obj.TakeDifferences=TakeDifferences;
            obj.DeconvolveParentWaveform=DeconvolveParentWaveform;
            obj.direction=direction;
+           obj.TakeDerivative=TakeDerivative;
+           obj.nderiv=nderiv;
        end
        
    end
