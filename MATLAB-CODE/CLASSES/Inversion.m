@@ -36,8 +36,8 @@ classdef Inversion
             if (obj.InversionParams.ImagingMethod == 1)
                 fprintf('Performing back-projection migration\n')
                 %Thin kernels
-                obj.kernel.tchar=0.90;
-                obj.kernel.nderiv=1.5;
+                obj.kernel.tchar=0.10;
+                obj.kernel.nderiv=0.0;
                 %One iteration
                 obj.InversionParams.nIterMax=1;
                 %Don't take data difference
@@ -111,6 +111,7 @@ classdef Inversion
             %GTMP=cell(1,obj.kernel.nTimes*nSeis);
             obj.G=zeros(...
                 obj.kernel.nTimes*nSeis,obj.nOff*obj.nDep);
+            %obj.G=sparse([],[],[],obj.kernel.nTimes*nSeis,obj.nOff*obj.nDep);
 
             %Here we make a matrix C obj.nOff by obj.nDep which store icol values
             C=zeros(obj.nOff,obj.nDep);
