@@ -11,7 +11,7 @@ curdir=pwd;
 mkdir(runname)
 cd(runname)
 
-DirsToLink = {'MATLAB-CODE/FUNCTIONS', 'MATLAB-CODE/CLASSES', 'KERNEL-SEM/TEST_MODELS'};
+DirsToLink = {'MATLAB-CODE/FUNCTIONS', 'MATLAB-CODE/CLASSES', 'KERNEL-SEM/TEST_MODELS', 'MATLAB-CODE/TOOLS'};
 
 for Dir = DirsToLink;
     cmd=sprintf('ln -sf %s/%s .', curdir, Dir{1});
@@ -20,6 +20,7 @@ end
 
 addpath('FUNCTIONS');
 addpath('CLASSES');
+addpath('TOOLS')
 %% Launch inversion
 
 I=Inversion();

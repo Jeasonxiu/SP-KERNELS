@@ -115,6 +115,13 @@ classdef DataVector
                            time=Time;
 
                         end
+                        
+                        TakeDerivative=true;
+                        
+                        if (TakeDerivative)
+                           nth=nth_deriv(-0.5,Daughter(:,2)',time);
+                           Daughter(:,2)=nth.fx_deriv;   
+                        end
 
                         dtmp=interp1(time,Daughter(:,2),KTimes)';
 
