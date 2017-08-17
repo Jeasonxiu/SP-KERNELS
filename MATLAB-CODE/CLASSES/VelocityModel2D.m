@@ -19,7 +19,6 @@ classdef VelocityModel2D
         function obj=VelocityModel2D()
         end
         function fig=plot_model(obj,varargin)
-            clf;
             set(0,'defaulttextInterpreter','latex') %latex axis labels
             
             if nargin>=2;
@@ -35,14 +34,22 @@ classdef VelocityModel2D
             end
             
             if nargin>=4;
-                labwavlen=varargin{3};
-                labamp=varargin{4};
-                labdep=varargin{5};
+                labwavlen=varargin{3}.wavlen;
+                labamp=varargin{3}.amplitude;
+                labdep=varargin{3}.depth;
             end
-
-            fig=figure(1);clf;
-            set(gcf,'position',[0,0,800,800])
-            ax1=subplot(2,3,[1 2 3]);
+            
+            if nargin>=5;
+                fig=gcf;
+                set(gcf,'position',[0,0,800,800])
+                ax1=varargin{4};
+                ImageOnly=true;
+            else
+                fig=figure(1);clf;
+                set(gcf,'position',[0,0,800,800])
+                ax1=subplot(2,3,[1 2 3]);
+                ImageOnly=false;
+            end
             
             %get background profile
             %VM=velocity_model;
@@ -75,17 +82,25 @@ classdef VelocityModel2D
                 dep=labdep/1000.0;
 
                 plot(obj.xs,dep-amp*cos(2*pi/wl*(obj.xs-1725)),'--k');
-                titstr=[ sprintf('LAB Properties\n')...
-                         sprintf('Amplitude (Trough-to-Peak) = %d km\n', amp*2.0)...
-                         sprintf('$\\lambda/2$ = %d km\n', wl/2.0)...
-                         sprintf('Depth = %d km', dep)];
-                buf=0.0125;
-                text(buf,1-buf,titstr,...
-                    'interpreter','latex',...
-                    'Units','normalized',...
-                    'horizontalAlignment', 'left',...
-                    'verticalAlignment', 'top');
                 
+                if (ImageOnly==false)
+                    titstr=[ sprintf('LAB Properties\n')...
+                             sprintf('Amplitude (Trough-to-Peak) = %d km\n', amp*2.0)...
+                             sprintf('$\\lambda/2$ = %d km\n', wl/2.0)...
+                             sprintf('Depth = %d km', dep)];
+                    buf=0.0125;
+
+                    text(buf,1-buf,titstr,...
+                        'interpreter','latex',...
+                        'Units','normalized',...
+                        'horizontalAlignment', 'left',...
+                        'verticalAlignment', 'top');
+                end
+                
+            end
+            
+            if ImageOnly;
+                return
             end
 
             npts=length(obj.dhat)/obj.nSeis;
