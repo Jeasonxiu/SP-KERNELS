@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -J BackProj
 #SBATCH -t 3:00:00
-#SBATCH -N 16
+#SBATCH -N 1
 #SBATCH --mem=50G
 #SBATCH -e BackProj-%j.err
 #SBATCH -o BackProj-%j.out
