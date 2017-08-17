@@ -1,14 +1,23 @@
 #!/bin/bash
 #SBATCH -J BackProj
 #SBATCH -t 3:00:00
-#SBATCH -N 1
+#SBATCH -N 16
 #SBATCH --mem=50G
-#SBATCH -e BackProj.err
-#SBATCH -o BackProj.out
+#SBATCH -e BackProj-%j.err
+#SBATCH -o BackProj-%j.out
 
-echo "Starting job $SLURM_ARRAY_TASK_ID on $HOSTNAME"
-matlab -r "MyMatlabFunction($SLURM_ARRAY_TASK_ID); quit;"
+#echo "Starting job $SLURM_ARRAY_TASK_ID on $HOSTNAME"
+#matlab -r "MyMatlabFunction($SLURM_ARRAY_TASK_ID); quit;"
 #
-#
-#
-matlab -r "master('$1', 1, $2, $3, $4, $5)"
+mode=1
+lab_amplitude=$1
+lab_wavlen=$2
+lab_depth=$3
+skipsta=$4
+TakeDerivative=true
+nderiv=0.5
+ApplyGaussianSmoothingFilter=$5
+
+label=LOOP-$lab_amplitude-$lab_wavlen-$lab_depth-$skipsta-$ApplyGaussianSmoothingFilter
+
+matlab -r "master('$label', $mode, $lab_amplitude, $lab_wavlen, $lab_depth, $skipsta, $TakeDerivative, $nderiv, $ApplyGaussianSmoothingFilter); quit;"

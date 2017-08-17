@@ -1,7 +1,9 @@
 % A master script to perform Sp migration or inversion.
 % N. J. Mancinelli -- June 2017
 %
-function master(label,mode1or2,lab_amplitude,lab_wavelength,lab_depth,skipsta)
+function master(...
+    label,mode1or2,lab_amplitude,lab_wavelength,lab_depth,skipsta,...
+    TakeDerivative,nderiv,ApplyGaussianSmoothingFilter)
 %clear classes
 
 runname=sprintf('OUTPUT/%s/%s',date,label);
@@ -26,7 +28,8 @@ addpath('TOOLS')
 I=Inversion();
 I=SetDefaultInversionParams(I, mode1or2);
 I=SetUpKernel(I);
-I=SetDataParams(I,lab_amplitude,lab_wavelength,lab_depth,skipsta);
+I=SetDataParams(I,lab_amplitude,lab_wavelength,lab_depth,skipsta,...
+    TakeDerivative,nderiv,ApplyGaussianSmoothingFilter);
 I=SetUpMatrices(I);
 I=RunInversion(I);
 %ITest=I.testForwardModel(I);
