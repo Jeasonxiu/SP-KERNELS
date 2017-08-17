@@ -44,8 +44,6 @@ classdef Inversion
                 obj.InversionParams.TakeDifferences=false;
                 %Don't regularize
                 obj.InversionParams.Norm_Opts=0;
-                %Don't Deconvolve
-                obj.InversionParams.DeconvolveParentWaveform=true;
 
             elseif (obj.InversionParams.ImagingMethod == 2)
                 fprintf('Performing C-G Inversion\n')
@@ -58,8 +56,6 @@ classdef Inversion
                 obj.InversionParams.TakeDifferences=true;
                 %Don't regularize
                 obj.InversionParams.Norm_Opts=2;
-                %Don't deconvolve
-                obj.InversionParams.DeconvolveParentWaveform=false;
             else
                 return
             end
@@ -74,19 +70,24 @@ classdef Inversion
             %Kernel.kernel(isnan(Kernel))=0;
             
         end 
-        function obj=SetDataParams(obj,lab_amplitude,lab_wavelength,lab_depth,skipSta)
+        function obj=SetDataParams(obj,...
+                lab_amplitude,lab_wavelength,lab_depth,...
+                skipSta,...
+                TakeDerivative,nderiv,...
+                ApplyGaussianSmoothingFilter)
+            %
             obj.DataParams=DataParams(lab_amplitude,lab_wavelength,lab_depth,...
                 skipSta,obj.kernel.KTimes,...
                 obj.kernel.Angles,obj.InversionParams.TakeDifferences,...
                 obj.InversionParams.DeconvolveParentWaveform,...
                 obj.InversionParams.direction,...
-                obj.InversionParams.TakeDerivative,...
-                obj.InversionParams.nderiv);
+                TakeDerivative,...
+                nderiv,...
+                ApplyGaussianSmoothingFilter);
         end
         function obj=SetUpMatrices(obj)
             
-            DV=DataVector(obj.DataParams);
-            obj.DataVector=DV;
+            nSeis=DataVector.get_nSeis(obj.DataParams);
             
             %Set model parameters
             x1=1100.0;
@@ -101,11 +102,7 @@ classdef Inversion
             obj.VelocityModel2D.zs=z1:dz:z2;
 
             obj.nDep=length(obj.VelocityModel2D.zs);
-            obj.nOff=length(obj.VelocityModel2D.xs);
-
-            obj.VelocityModel2D.Locations=DV.Locations;
-            
-            nSeis=length(DV.RayParams);
+            obj.nOff=length(obj.VelocityModel2D.xs);      
             
             obj.VelocityModel2D.nSeis=nSeis;
             
@@ -114,6 +111,14 @@ classdef Inversion
             obj.G=zeros(...
                 obj.kernel.nTimes*nSeis,obj.nOff*obj.nDep);
             %obj.G=sparse([],[],[],obj.kernel.nTimes*nSeis,obj.nOff*obj.nDep);
+            
+            DV=DataVector(obj.DataParams);
+            obj.DataVector=DV;
+            
+            obj.VelocityModel2D.Locations=DV.Locations;
+            
+
+           
 
             %Here we make a matrix C obj.nOff by obj.nDep which store icol values
             C=zeros(obj.nOff,obj.nDep);

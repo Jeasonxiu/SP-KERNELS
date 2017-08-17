@@ -113,6 +113,15 @@ classdef DataVector
                            time=Time;
 
                         end
+                        
+                        
+                        if obj.DataParams.ApplyGaussianSmoothingFilter
+                            stdev = 2; %s
+                            dt=abs(time(2)-time(1));
+                            tr=Daughter(:,2);
+                            tr_fil = GaussianFilter.filter_trace(tr,stdev,dt);
+                            Daughter(:,2)=tr_fil;
+                        end
                       
                         
                         if (obj.DataParams.TakeDerivative)
@@ -200,6 +209,24 @@ classdef DataVector
             ind2=ind1+obj.nptsPerSeis-1;
             seis=obj.d(ind1:ind2);
         end
+    end
+    methods (Static)
+        function nSeis = get_nSeis(InputDataParams)            
+            skipSta=InputDataParams.skipSta;
+            incangs=InputDataParams.Angles;
+            Sta1=1;
+            Sta2=150;
+            Stas=Sta1:skipSta:Sta2;
+            if (skipSta < 0);
+                Stas=Sta2:skipSta:Sta1;
+            end
+            nSeis=length(Stas)*length(incangs);
+            if InputDataParams.direction > 2
+                nSeis = nSeis*2;
+            end
+            
+        end
+        
     end
 
 end
