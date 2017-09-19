@@ -3,8 +3,8 @@ classdef GaussianFilter
    end
    methods (Static)
        function tr_fil = filter_trace(tr,stdev,dt)
-           npts=round(stdev/dt*3.0);
-           alpha=1/stdev*dt*npts;
+           npts=round(2*stdev/dt*3.0);
+           alpha=0.5/stdev*dt*npts;
            %fprintf('npts, alpha = %d, %f\n',npts,alpha)
            gw=gausswin(npts,alpha);
            %wvtool(gw)
@@ -15,10 +15,10 @@ classdef GaussianFilter
            function [tr, time] = generate_test_trace
                 dt=1.0;
                 time = -500:dt:500;
-                tr=gausswin(length(time),30);
+                tr=gausswin(length(time),300);
            end
            [tr,time]=generate_test_trace;
-           stdev=50;
+           stdev=25;
            trfil=GaussianFilter.filter_trace(tr,stdev,dt);
            plot(time,tr); hold on
            plot(time,trfil)
