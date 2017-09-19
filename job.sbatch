@@ -15,7 +15,7 @@ lab_wavlen=$2
 lab_depth=$3
 skipsta=$4
 TakeDerivative=true
-nderiv=0.5
+nderiv=1.5
 ApplyGaussianSmoothingFilter=$5
 
 label=LOOP-$lab_amplitude-$lab_wavlen-$lab_depth-$skipsta-$ApplyGaussianSmoothingFilter
