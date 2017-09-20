@@ -335,7 +335,7 @@ def write_SOURCE(H,**params):
 	fout.write('# (For the moment dt must be equal to the dt of the simulation. File name cannot exceed 150 characters)\n')
 	fout.write('name_of_source_file             = "/uoigaf/iuagzf/afb" # Only for option 8 : file containing the source wavelet\n')
 	fout.write('burst_band_width                = 200.415        # Only for option 9 : band width of the burst\n')
-	fout.write('f0                              = 0.125           # dominant source frequency (Hz) if not Dirac or Heaviside\n')
+	fout.write('f0                              = 0.25           # dominant source frequency (Hz) if not Dirac or Heaviside\n')
 	fout.write('tshift                          = 0.0            # time shift when multi sources (if one source, must be zero)\n')
 	fout.write('anglesource                     = %5.0f.\n' % (params["ANGLE_SOURCE"] ))
 	fout.write('Mxx                             = 1.             # Mxx component (for a moment tensor source only)\n')
