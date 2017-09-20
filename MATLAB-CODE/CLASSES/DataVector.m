@@ -74,7 +74,7 @@ classdef DataVector
                         time=Parent(:,1) - Parent(imax,1);
 
                         %Parent(:,2)=Parent(:,2)/AmpMax;
-                        Daughter(:,2)=Daughter(:,2)/AmpMax;
+                        %Daughter(:,2)=Daughter(:,2)/AmpMax;
 
                         %plot(Parent(:,1),Parent(:,2),Daughter(:,1),Daughter(:,2))
                         %pause
@@ -88,16 +88,35 @@ classdef DataVector
                         end
 
                         if (obj.DataParams.DeconvolveParentWaveform)
-                           Mask=(Parent(:,1)>Parent(imax-40,1)).*(Parent(:,1)<Parent(imax+40,1));
-                           P=Parent(:,2).*Mask;
-                           D=Daughter(:,2);
-                           TB=4;
-                           NT=3;
+                           %Mask=(Parent(:,1)>Parent(imax-40,1)).*(Parent(:,1)<Parent(imax+40,1));
+                           %P=Parent(:,2).*Mask;
+                           %D=Daughter(:,2);
+                           %TB=4;
+                           %NT=3;
+                           %dt=Parent(2,1)-Parent(1,1);
+                           %win_len=50;
+                           %Poverlap=0.99;
+                           %
+                           %it_end=imax+200;
+                           % if it_end > length(P)
+                           %     fprintf('Warning***: it_end > length(P)\n')
+                           %     it_end = length(P);
+                           % end
+                           tstart=Parent(1,1);
                            dt=Parent(2,1)-Parent(1,1);
-                           win_len=50;
-                           Poverlap=0.99;        
-
-                           [Time, RF_Time] = ETMTM(P(1:imax+200)',D(1:imax+200)',TB,NT,'data',dt,win_len,Poverlap);
+                           ParentWvfrm=Waveform(Parent(:,2),tstart,dt);
+                           DaughtWvfrm=Waveform(Daughter(:,2),tstart,dt);
+                           
+                           RF=ReceiverFunction(ParentWvfrm,DaughtWvfrm);
+                           
+                           Time=RF.time;
+                           RF_Time=RF.rf;
+                           
+                           %figure(17)
+                           %plot(RF)
+                           %pause(2)
+                           
+                           %[Time, RF_Time] = ETMTM(P(1:it_end)',D(1:it_end)',TB,NT,'data',dt,win_len,Poverlap);
 
                            %clf;
                            %subplot(2,1,1)
@@ -116,7 +135,7 @@ classdef DataVector
                         
                         
                         if obj.DataParams.ApplyGaussianSmoothingFilter
-                            stdev = 2; %s
+                            stdev = 0.75; %s
                             dt=abs(time(2)-time(1));
                             tr=Daughter(:,2);
                             tr_fil = GaussianFilter.filter_trace(tr,stdev,dt);
@@ -208,6 +227,12 @@ classdef DataVector
             ind1=(iseis-1)*obj.nptsPerSeis+1;
             ind2=ind1+obj.nptsPerSeis-1;
             seis=obj.d(ind1:ind2);
+        end
+        function print(obj)
+            fprintf('---------------------\n')
+            fprintf('   length(d) = %d\n', length(obj.d));
+            fprintf('min, max (d) = %f, %f\n', min(obj.d), max(obj.d));
+            fprintf('---------------------\n')
         end
     end
     methods (Static)
