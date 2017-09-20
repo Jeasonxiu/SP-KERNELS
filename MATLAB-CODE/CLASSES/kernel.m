@@ -14,7 +14,7 @@ classdef kernel
         Z
         tDeci=1
         tchar=1.6
-        nderiv=3.0
+        nderiv=3.5
     end
     methods
         function obj=kernel(Kernel_Type)
@@ -31,11 +31,15 @@ classdef kernel
             obj.model=update(obj.model,newmodel);
         end
         
-        function obj=load(obj)
+        function obj=load(obj,varargin)
             obj=init(obj);
             if obj.Kernel_Type == 1;
                 path='/Volumes/nmancine/data2/nmancine/PROJECTS/SP_RECEIVER_FUNCTIONS/KERNEL/SP-KERNELS/DATA';
-                [obj.Kernel,obj.X,obj.Y,obj.Z,obj.KTimes,obj.nTimes,obj.Angles] = load_kernel(path,obj.tDeci);
+                if nargin == 2;
+                    [obj.Kernel,obj.X,obj.Y,obj.Z,obj.KTimes,obj.nTimes,obj.Angles] = load_kernel(path,obj.tDeci,varargin{1});
+                else
+                    [obj.Kernel,obj.X,obj.Y,obj.Z,obj.KTimes,obj.nTimes,obj.Angles] = load_kernel(path,obj.tDeci);
+                end
                 obj.xs=flipud(obj.X(1,:,1)');
                 obj.zs=obj.Y(:,1,1)';
                 obj.Kernel=flip(obj.Kernel,2);
