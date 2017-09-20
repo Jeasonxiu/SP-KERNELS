@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-def main():
+def main(incAngle=23):
 	import os
 	os.system('ls OUTPUT_FILES/AA.*.BXZ.semd > filelistZ')
 	os.system('ls OUTPUT_FILES/AA.*.BXX.semd > filelistX')
@@ -17,16 +17,18 @@ def main():
 
 	for i in range(len(filenames_Z)):
 		print filenames_X[i], filenames_Z[i]
-		rotate(filenames_X[i].strip('\n'),filenames_Z[i].strip('\n'))
+		rotate(filenames_X[i].strip('\n'),filenames_Z[i].strip('\n'), incAngle)
 
-def rotate(filename_X, filename_Z, debug=False):
+
+def rotate(filename_X, filename_Z, incAngle, debug=False):
 	"""
 	"""
 	import sys
 	sys.path.append('/users/nmancine/PROG/ROTATE/')
 	from xz2svp import xz2svp
 	from numpy import arctan,tan,sin, pi
-	from numpy import mean
+	from numpy import mean, arange
+	from scipy.interpolate import interp1d
 
 	t,Z=readxy(filename_Z)
 	t,R=readxy(filename_X)
@@ -40,20 +42,31 @@ def rotate(filename_X, filename_Z, debug=False):
 	vs_half = 4400. 
 	vp_half = 7920.
 
+	#vs_half=vs_surf
+	#vp_half=vp_surf
+
 	v_half=[vp_half,vs_half]
 
 	#1 for P, 2 for S
 	iphase=2
 
-	incAngle = 23.0
 	incAngle_rad = incAngle*pi/180.
 	p = sin(incAngle_rad)/v_half[iphase-1]
 
 	P,S = xz2svp(R,Z,vp_surf,vs_surf,p)
 
+	t_desired=arange(t[0],t[-1],0.1)
+
+	
+	funP=interp1d(t,P)
+	funS=interp1d(t,S)
+
+	P_desired=funP(t_desired)
+	S_desired=funS(t_desired)
+
 	tmp=filename_Z[16:21]
-	writexy(t,S,'OUTPUT_FILES/AA.'+tmp+'.BXS.semd')
-	writexy(t,P,'OUTPUT_FILES/AA.'+tmp+'.BXP.semd')
+	writexy(t_desired,S_desired,'OUTPUT_FILES/AA.'+tmp+'.BXS.semd')
+	writexy(t_desired,P_desired,'OUTPUT_FILES/AA.'+tmp+'.BXP.semd')
 
 	if debug:
 		import pylab as plt
@@ -131,4 +144,9 @@ def readxy(fname):
 
 
 	return array(x),array(y)
+
+
+	
+
+
 

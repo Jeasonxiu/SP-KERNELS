@@ -5,8 +5,9 @@ def main():
 	sys.path.append('src/')
 	import rotate
 	from numpy import argmax
-	
-	rotate.main() 
+
+	incangle=float(sys.argv[1])	
+	rotate.main(incangle) 
 
 	os.system('ls OUTPUT_FILES/AA*BXS.semd > filelist')
 	fin=open('filelist','r')
