@@ -36,7 +36,7 @@ classdef figure5 < MyFigure
 
             end
 
-            AddColorbars=false;
+            AddColorbars=true;
             
             KSEM_NFO=kernel(1);
             KSEM_NFO=load(KSEM_NFO);
@@ -69,14 +69,29 @@ classdef figure5 < MyFigure
 
                 iplt=iangle;
 
-                subplot(3,3,0+iplt);
+                ax=subplot(3,3,0+iplt);
                 pcolor(KSEM_NFO.xs,-KSEM_NFO.zs,KSEM); shading flat; hold on
                 text(0.05,0.80,sprintf('SEM\nTime: %.2f s\nAngle: %.2f$^\\circ$', KSEM_NFO.KTimes(itime), KSEM_NFO.Angles(iangle)),'Units','normalized','Interpreter','Latex');
                 polarmap();
-                if AddColorbars;
-                    colorbar;
+                if AddColorbars && iangle == 3;
+                    c=colorbar;
                     clim=max(max(abs(KSEM)));
                     caxis([-clim,clim]);
+                    
+                    %ax.Position(4)=ax.Position(4)*0.95;
+                    totwid=ax.Position(3);
+                    
+                    gr=1.618;
+                    cwid=totwid*0.03;
+                    buf=cwid*gr;
+                    
+                    ax.Position(3)=totwid*1.00;
+                    c.Position(1)=ax.Position(1)+totwid+buf;
+                    c.Position(2)=ax.Position(2);
+                    c.Position(3)=cwid;
+                    c.Position(4)=ax.Position(4)/gr;
+                    
+                    c.Label.String=('km^{-2}');
                 end
 
                 xlim(xlimits)
@@ -97,14 +112,32 @@ classdef figure5 < MyFigure
                 deltax=abs(KAN_NFO.xs(2)-KAN_NFO.xs(1));
                 deltaz=abs(KAN_NFO.zs(2)-KAN_NFO.zs(1));
                 KAN=KAN/(deltax*deltaz);
+                
+                fprintf('deltax, deltaz: %f, %f', deltax, deltaz);
 
-                subplot(3,3,3+iplt);
+                ax=subplot(3,3,3+iplt);
                 pcolor(KAN_NFO.xs,-KAN_NFO.zs,KAN); shading flat; hold on;
 
-                if AddColorbars;
-                    colorbar;
+                if AddColorbars && iangle == 3;
+                    c=colorbar;
                     clim=max(max(abs(KAN)));
                     caxis([-clim,clim]);
+                    
+                    %ax.Position(4)=ax.Position(4)*0.95;
+                    totwid=ax.Position(3);
+                    
+                    gr=1.618;
+                    cwid=totwid*0.03;
+                    buf=cwid*gr;
+                    
+                    ax.Position(3)=totwid*1.00;
+                    c.Position(1)=ax.Position(1)+totwid+buf;
+                    c.Position(2)=ax.Position(2);
+                    c.Position(3)=cwid;
+                    c.Position(4)=ax.Position(4)/gr;
+                    
+                    c.Label.String=('km^{-2}');
+                    
                 end
 
                 text(0.05,0.80,sprintf('Ray Theory\nTime: %.2f s\nAngle: %.2f$^\\circ$', KAN_NFO.KTimes(itime), KAN_NFO.Angles(iangle)),'Units','normalized','Interpreter','Latex');
@@ -123,7 +156,7 @@ classdef figure5 < MyFigure
 
                 plot(KAN_NFO.xs,tmpf2/scalingfac,'-r')
                 xlim(xlimits)
-                text(0.05,0.85,sprintf('SEM/Analytic = %f',scalingfac),'Units','normalized');
+                text(0.05,0.85,sprintf('SEM/RT = %f',scalingfac),'Units','normalized');
 
             end
 
@@ -132,7 +165,7 @@ classdef figure5 < MyFigure
             subplot(3,3,4)
             ylabel('Depth (km)')
             subplot(3,3,7)
-            ylabel('Mean Abs. Amplitude')
+            ylabel('Mean Abs. Amplitude (km$^{-2}$)')
             xlabel('Lateral Position (km)')
             subplot(3,3,8)
             xlabel('Lateral Position (km)')
