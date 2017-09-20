@@ -27,20 +27,39 @@ Kernel=zeros(nd,ns,length(Angles),length(KTimes));
 %lf=1.0/150.0;
 %hf=1.0/12.0;
 
+counter=0;
+totcount=length(Angles)*nd*ns;
+%tstart=datetime;
+%tlast=datetime;
+
 for iangle=1:length(Angles);
 Angle=Angles(iangle);
     
 for idep=1:nd;
-    fprintf('  %.2f complete at %s\n',(idep-1)/nd*100.0,datestr(now));
+    
     
     Scat_Depth=Scat_Depths(idep);
     
     %disp(Scat_Depth);
     
     %scale=40.0;
-    basedir=sprintf('../../KERNEL-SEM/OUTPUT_FILES_%d-%1.2f-%d-%2d-DBLPERIOD/OUTPUT_FILES/',Scat_Depth*1000,Scat_Strength,Scat_Radius,Angle);
+    basedir=sprintf('KERNEL-SEM/OUTPUT_FILES_%d-%1.2f-%d-%2d/OUTPUT_FILES/',Scat_Depth*1000,Scat_Strength,Scat_Radius,Angle);
 
     for ista = 1:1:ns;
+        
+        counter=counter+1;
+        %telap=datetime-tstart;
+        
+        %tinc=datetime-tlast;
+        %tlast=datetime;
+        %trem=tinc*(totcount-counter);
+        imod=mod(counter,20);
+        %trem_vector(imod+1)=trem;
+        if imod==0;
+            %plot(telap,mean(trem_vector),'^r'); hold on
+            fprintf('  %.5f %%.\n',counter/totcount*100);
+        end
+        
         station=Stations(ista);
 
         %load data in fast
@@ -103,7 +122,7 @@ end
 
 end
 
-save(sprintf('Kernel_Angles_x2_%1.2f_%d.mat',Scat_Strength,Scat_Radius))
+save(sprintf('Kernel_Angles_x2_%1.2f_%d_new.mat',Scat_Strength,Scat_Radius))
 
 end
 
