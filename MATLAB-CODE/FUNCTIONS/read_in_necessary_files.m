@@ -65,12 +65,13 @@ function [Tdirect,Tscat,Pscat,xs,zs]=read_in_necessary_files(rp, xs, zs, model)
                             Pscat(ix,iz)=p0;
                             TryAlgorithm2=0;
                             break
-                        elseif abs((xray-abs(x))/df_dp) < 1.0E-5;
+                        elseif abs((xray-abs(x))/df_dp) < 1.0E-7;
                             tkeep=tray;
                             pkeep=p0;
                             Tscat(ix,iz)=tkeep;
                             Pscat(ix,iz)=pkeep;
                             TryAlgorithm2=0;
+                            %fprintf('Alg 1 worked: x, z = %d, %d \n', x, z)
                             break
                             
                         elseif isnan(p0)
@@ -87,8 +88,11 @@ function [Tdirect,Tscat,Pscat,xs,zs]=read_in_necessary_files(rp, xs, zs, model)
                     end
                 
                 if (TryAlgorithm2==1)
-                    ang1=0.0; ang2=90.0; np=100;
-                    angles=linspace(ang1,ang2,np);
+                    %ang1=0.0; ang2=90.0;
+                    np=1000;
+                    %angles=linspace(ang1,ang2,np);
+                    angles=acosd(linspace(1,0,np));
+                    %angles=atand(linspace(0,1200,1000));
                     
                     for angIter = 1:4;
                     
