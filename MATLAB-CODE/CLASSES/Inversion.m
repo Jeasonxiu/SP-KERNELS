@@ -60,7 +60,7 @@ classdef Inversion
                 return
             end
 
-            obj.kernel.Angles=[20,23,26];
+            obj.kernel.Angles=[23,26,29,32];
             
             disp(obj.kernel.Angles)
             
