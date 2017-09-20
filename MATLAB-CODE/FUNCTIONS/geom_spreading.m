@@ -15,8 +15,9 @@ THE2=asind(P/U1(1,1));
 
 %take derivative and resample
 tmp=diff(P);
+dx=xs(2)-xs(1);
 xmid=(xs(1:(end-1))+xs(2:end))/2;
-dpdx=interp2(xmid,zs,tmp',xs,zs);
+dpdx=interp2(xmid,zs,tmp',xs,zs)/dx;
 
 
 %This is modified from Eq 6.23 in Shearers Intro to
